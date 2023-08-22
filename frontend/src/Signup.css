@@ -1,0 +1,115 @@
+.signup_page_outer_wrapper {
+  background: black;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.signup_wrapper_main_00 {
+  width: 852px;
+  height: 497px;
+  border-radius: 16px;
+  background: linear-gradient(
+    136deg,
+    rgba(255, 255, 255, 0.54) 0%,
+    rgba(196, 196, 196, 0) 100%
+  );
+  backdrop-filter: blur(20px);
+  margin-top: 300px;
+  margin: 0 auto;
+}
+.signup_wrapper_main_00 > span {
+  color: #fff;
+  text-align: center;
+  font-family: "Inter";
+  display: flex;
+  font-size: 32px;
+  margin-left: 45%;
+
+  font-style: normal;
+  font-weight: 300;
+  margin-top: 15px;
+}
+
+.signup_wrapper_main_01 {
+  margin-left: 40%;
+  margin-top: 45px;
+  display: flex;
+  padding: 16px 17px;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-family: "Inter";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #fff;
+  cursor: pointer;
+  background: rgba(47, 47, 47, 0);
+}
+
+.signup_wrapper_main_01:hover {
+  background: rgba(55, 55, 55, 0);
+}
+
+.signup_wrapper_main_00 > section {
+  width: 781px;
+  height: 1px;
+  background: #fff;
+  margin-top: 46px;
+  margin-left: 4%;
+}
+
+.signup_wrapper_main_02 {
+  display: flex;
+  flex-direction: row;
+  margin-left: 4%;
+  margin-top: 32px;
+  gap: 33%;
+}
+.signup_wrapper_main_02 > div > span {
+  color: #fff;
+  font-family: "Inter";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+}
+.signup_wrapper_main_02 > div > input {
+  border-radius: 5px;
+  border: 1px solid #fff;
+  background: rgba(47, 47, 47, 0);
+  padding: 17px 247% 17px 2%;
+}
+.signup_wrapper_main_02_button {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.signup_wrapper_main_03 {
+    display: flex;
+    margin-left: 4%;
+    margin-top: 82px;
+    width: 100%;
+
+}
+.signup_wrapper_main_03 > button {
+    cursor: pointer;
+width: 92%;
+  border-radius: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(25px);
+  display: flex;
+  padding: 17px 233px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-family: "Inter";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+}
