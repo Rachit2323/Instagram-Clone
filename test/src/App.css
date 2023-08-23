@@ -1,0 +1,230 @@
+.Signup_page_main_outer_wrapper_00 {
+}
+
+.Signup_page_main_outer_wrapper_01 {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.Signup_page_main_outer_wrapper_01_left {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  /* margin-top: 140px;
+  margin-left: 30%; */
+  margin-bottom: 30px;
+  height: 100vh;
+}
+
+.Signup_page_main_outer_wrapper_01_left_page {
+  width: 70%;
+  /* background: #606055; */
+
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto;
+  margin-top: 90px;
+  height: 500px;
+}
+
+.Signup_page_main_outer_wrapper_01_left_page_button{
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-top: 30px;
+
+}
+.Signup_page_main_outer_wrapper_01_left_page_button > button{
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  border: 2px solid;
+  width: 92%;
+  cursor: pointer;
+  padding: 10px 52px;
+  margin-left: 3%;
+  font-size: 20px;
+  font-family: "Gilroy ";
+  font-weight: bold;
+  color: #1414f7c4;
+  display: flex;
+
+  transition: background-color 0.3s, color 0.3s;
+}
+.Signup_page_main_outer_wrapper_01_left_page_button > button:hover {
+  background-color: blue; /* Change background color on hover */
+  color: #fff; /* Change text color on hover */
+}
+
+.Signup_page_main_outer_wrapper_01_left_page_asking{
+  font-size: 16px;
+  font-family: "Gilroy ";
+  font-weight: bold;
+  color: #1414f7c4;
+  display: flex;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+}
+.Signup_page_main_outer_wrapper_01_left_page_asking >span {
+  text-decoration: underline;
+  cursor: pointer;
+
+}
+.Signup_page_main_outer_wrapper_01_left_page > section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.Signup_page_main_outer_wrapper_01_left_page > span {
+  font-size: 23px;
+  font-family: "Gilroy ";
+  font-weight: bold;
+  color: #1414f7c4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+
+  width: 100%;
+}
+
+.Signup_page_main_outer_wrapper_01_left_page > section > span {
+  font-size: 20px;
+  font-family: "Gilroy ";
+  align-items: center;
+  justify-content: flex-start;
+  font-weight: bold;
+  color: #1414f7c4;
+  display: flex;
+  margin-left: 3%;
+  margin-bottom: 4%;
+  margin-top: 2%;
+  /* margin: 0 auto; */
+  width: 100%;
+}
+
+.Signup_page_main_outer_wrapper_01_left_page > section > div > input {
+  border: 8px;
+  box-shadow: blue;
+  min-height: 30px;
+  border: 34px;
+  border-radius: 16px;
+  width: 91%;
+  color: blue;
+  margin-left: 3%;
+  box-shadow: -1px -1px 29px rgb(42 68 209);
+}
+.Signup_page_main_outer_wrapper_01_left_page > section > div > input:focus {
+  box-shadow: red;
+}
+
+.input-container {
+  position: relative;
+}
+
+.icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.Signup_page_main_outer_wrapper_01_left_page > section > input:focus {
+  outline: none;
+}
+
+.Signup_page_main_outer_wrapper_01_right {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.cube-container {
+  width: 200px;
+  height: 200px;
+  perspective: 800px;
+  margin: 50px auto;
+ margin-top: 290px;
+}
+
+.cube {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: rotate 8s infinite linear;
+}
+
+.face {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  color: rgb(40, 48, 197);
+  font-size: 18px;
+  text-align: center;
+  line-height: 200px;
+  background: transparent;
+  opacity: 0.9;
+  border: 2px solid;
+  border-image: linear-gradient(
+      to right,
+      #ff6b6b,
+      #355c7d,
+      #557d35,
+      #cfcf16,
+      #a51f1f
+    )
+    1;
+    box-shadow: 0 0 100px rgb(25 73 173 / 80%);
+}
+
+.front {
+  transform: translateZ(100px);
+}
+
+.back {
+  transform: rotateY(180deg) translateZ(100px);
+}
+
+.right {
+  transform: rotateY(90deg) translateZ(100px);
+}
+
+.left {
+  transform: rotateY(-90deg) translateZ(100px);
+}
+
+.top {
+  transform: rotateX(90deg) translateZ(100px);
+}
+
+.bottom {
+  transform: rotateX(-90deg) translateZ(100px);
+}
+
+.cube-container:hover .cube {
+  animation-play-state: paused;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateX(0) rotateY(0) rotateZ(0);
+  }
+
+  100% {
+    transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+  }
+}
