@@ -5,7 +5,9 @@ const SECRET_KEY = "knsincjjscbjdcjbbbej3e3u8b";
 
 exports.signup = async (req, res) => {
   try {
+  
     const { username, email, password } = req.body;
+    console.log(username, email, password );
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
