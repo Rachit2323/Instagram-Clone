@@ -46,6 +46,7 @@ import './Signup.css';
 import { BiUser, BiLogoGoogle } from 'react-icons/bi';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { AiOutlineMail } from 'react-icons/ai';
+import { signupUser } from './Reducers/auth.js';
 
 const Signup = () => {
   const [usernameIconVisible, setUsernameIconVisible] = useState(true);
@@ -61,7 +62,7 @@ const Signup = () => {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) => { 
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -71,7 +72,7 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(signup(formData));
+    dispatch(signupUser(formData));
   };
 
   const navigateToSignin = () => {

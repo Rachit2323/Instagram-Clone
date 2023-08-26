@@ -5,8 +5,7 @@ import authReducer from './Reducers/auth';
 
 const store = configureStore({
   reducer: {
-    auth: authReducer,
-  
+    user: authReducer,
   },
 
 });
