@@ -70,6 +70,26 @@ export const signupUser = createAsyncThunk(
   }
 );
 
+export const signinUser = createAsyncThunk(
+  'signinuser',
+  async (body) => {
+    try {
+      const result = await fetch('http://localhost:5000/users/signin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      const data = await result.json(); // Parse response JSON
+      return data; // Return the parsed JSON data
+    } catch (error) {
+      return { error: error.message }; // Handle error
+    }
+  }
+);
+
 const authReducer = createSlice({
   name: 'user',
   initialState,
@@ -85,6 +105,18 @@ const authReducer = createSlice({
       }
     },
     [signupUser.pending]: (state) => {
+      state.loading = true;
+    },
+    [signinUser.fulfilled]: (state, action) => {
+      state.loading = false;
+      if (action.payload.error) {
+        state.error = action.payload.error;
+      }
+      else{
+        state.token=action.payload.token;
+      }
+    },
+    [signinUser.pending]: (state) => {
       state.loading = true;
     },
   },
