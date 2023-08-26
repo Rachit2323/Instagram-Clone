@@ -39,14 +39,17 @@
 
 // export default Signup;
 
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { signup } from './actions/auth'; // Make sure to provide the correct path
-import './Signup.css';
-import { BiUser, BiLogoGoogle } from 'react-icons/bi';
-import { RiLockPasswordLine } from 'react-icons/ri';
-import { AiOutlineMail } from 'react-icons/ai';
-import { signupUser } from './Reducers/auth.js';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { signup } from "./actions/auth"; // Make sure to provide the correct path
+import "./Signup.css";
+import { BiUser, BiLogoGoogle } from "react-icons/bi";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { AiOutlineMail } from "react-icons/ai";
+import { signupUser } from "./Reducers/auth.js";
+import { useGoogleOneTapLogin } from "@react-oauth/google";
+
+import { GoogleLogin } from "@react-oauth/google";
 
 const Signup = () => {
   const [usernameIconVisible, setUsernameIconVisible] = useState(true);
@@ -62,7 +65,7 @@ const Signup = () => {
     }
   };
 
-  const handleChange = (e) => { 
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -79,10 +82,29 @@ const Signup = () => {
     // Implement your navigation logic here
   };
 
+  const onSuccess = (res) => {
+    console.log(res);
+  };
+
+  const onFailure = (res) => {
+    console.log(res);
+  };
+
+  {
+    //      <GoogleLogin
+    //   onSuccess={credentialResponse => {
+    //     console.log(credentialResponse);
+    //   }}
+    //   onError={() => {
+    //     console.log('Login Failed');
+    //   }}
+    //   useOneTap
+    // />;
+  }
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
+    username: "",
+    email: "",
+    password: "",
   });
 
   return (
@@ -99,14 +121,26 @@ const Signup = () => {
                   <div className="input-container">
                     {usernameIconVisible && (
                       <span className="icon">
-                        <BiUser style={{ color: 'blue', paddingLeft: '8px' }} />
+                        <BiUser style={{ color: "blue", paddingLeft: "8px" }} />
                       </span>
                     )}
                     <input
                       type="text"
                       name="username"
-                      onFocus={() => handleIconVisibility(setUsernameIconVisible, false, formData.username)}
-                      onBlur={() => handleIconVisibility(setUsernameIconVisible, true, formData.username)}
+                      onFocus={() =>
+                        handleIconVisibility(
+                          setUsernameIconVisible,
+                          false,
+                          formData.username
+                        )
+                      }
+                      onBlur={() =>
+                        handleIconVisibility(
+                          setUsernameIconVisible,
+                          true,
+                          formData.username
+                        )
+                      }
                       onChange={handleChange}
                       value={formData.username}
                     />
@@ -117,14 +151,28 @@ const Signup = () => {
                   <div className="input-container">
                     {emailIconVisible && (
                       <span className="icon">
-                        <AiOutlineMail style={{ color: 'blue', paddingLeft: '8px' }} />
+                        <AiOutlineMail
+                          style={{ color: "blue", paddingLeft: "8px" }}
+                        />
                       </span>
                     )}
                     <input
                       type="email"
                       name="email"
-                      onFocus={() => handleIconVisibility(setEmailIconVisible, false, formData.email)}
-                      onBlur={() => handleIconVisibility(setEmailIconVisible, true, formData.email)}
+                      onFocus={() =>
+                        handleIconVisibility(
+                          setEmailIconVisible,
+                          false,
+                          formData.email
+                        )
+                      }
+                      onBlur={() =>
+                        handleIconVisibility(
+                          setEmailIconVisible,
+                          true,
+                          formData.email
+                        )
+                      }
                       onChange={handleChange}
                       value={formData.email}
                     />
@@ -135,28 +183,52 @@ const Signup = () => {
                   <div className="input-container">
                     {passwordIconVisible && (
                       <span className="icon">
-                        <RiLockPasswordLine style={{ color: 'blue', paddingLeft: '8px' }} />
+                        <RiLockPasswordLine
+                          style={{ color: "blue", paddingLeft: "8px" }}
+                        />
                       </span>
                     )}
                     <input
                       type="password"
                       name="password"
-                      onFocus={() => handleIconVisibility(setPasswordIconVisible, false, formData.password)}
-                      onBlur={() => handleIconVisibility(setPasswordIconVisible, true, formData.password)}
+                      onFocus={() =>
+                        handleIconVisibility(
+                          setPasswordIconVisible,
+                          false,
+                          formData.password
+                        )
+                      }
+                      onBlur={() =>
+                        handleIconVisibility(
+                          setPasswordIconVisible,
+                          true,
+                          formData.password
+                        )
+                      }
                       onChange={handleChange}
                       value={formData.password}
                     />
                   </div>
                 </section>
                 <div className="Signup_page_main_outer_wrapper_01_left_page_button">
-                  <button>
-                    <BiLogoGoogle style={{ paddingRight: '3px' }} />
-                    Google Signup
+                  <button onClick={() => {}}>
+                    <GoogleLogin
+                      onSuccess={(credentialResponse) => {
+                        console.log(credentialResponse);
+                      }}
+                      onError={() => {
+                        console.log("Login Failed");
+                      }}
+                      useOneTap
+                    />
+                    {/* <BiLogoGoogle style={{ paddingRight: "3px" }} />
+                    Google Signup */}
                   </button>
                   <button onClick={handleSubmit}>Create Your Account</button>
                 </div>
                 <div className="Signup_page_main_outer_wrapper_01_left_page_asking">
-                  Already have an account? <span onClick={navigateToSignin}>Sign in</span>
+                  Already have an account?{" "}
+                  <span onClick={navigateToSignin}>Sign in</span>
                 </div>
               </div>
             </div>

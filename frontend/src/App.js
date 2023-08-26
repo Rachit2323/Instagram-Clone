@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Discover from './Discover';
 import Signup from './Signup';
 import Signin from './Sigin.js';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+
 
 const App = () => {
+  
+  // useEffect(()=>{
+  //   function start(){
+  //     gapi.client.init({
+  //       clientId:clientId,
+  //       scope:""
+  //     })
+  //   };
+  //   gapi.load('client:auth2',start);
+  // })
   return (
     <Router>
       <Routes>
