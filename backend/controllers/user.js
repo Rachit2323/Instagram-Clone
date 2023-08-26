@@ -1,7 +1,9 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const { OAuth2Client } = require("google-auth-library");
 const SECRET_KEY = "knsincjjscbjdcjbbbej3e3u8b";
+const googleClientId = "431980266310-k4b3dj9i3rqpmqag7bukt5b66h77pnae.apps.googleusercontent.com";
 
 exports.signup = async (req, res) => {
   try {
@@ -86,6 +88,42 @@ exports.signin = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "An error occurred while signing in" });
     console.log(error);
+  }
+};
+
+const client = new OAuth2Client(googleClientId);
+
+exports.googleSignin = async (req, res) => {
+  try {
+    const { idToken } = req.body;
+
+    // Verify Google ID token
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: googleClientId,
+    });
+
+    const { email, sub } = ticket.getPayload();
+
+    // Check if the user's email exists in the database
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      // You might want to handle this case, maybe create a new user
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Generate a token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      jwtSecretKey,
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({ message: "User signed in with Google successfully", token });
+  } catch (error) {
+    res.status(500).json({ error: "An error occurred while signing in with Google" });
+    console.error(error);
   }
 };
 

@@ -1,12 +1,14 @@
 const express = require("express");
-const connectMongoDb=require('./database/connectMongoDb')
+// const connectMongoDb=require('./database/connectMongoDb')
+const mongoose=require("mongoose");
 
 const app = express();
 const userRoutes = require("./routes/user.js");
 const postRoutes=require("./routes/post.js");
+const cors=require("cors");
 
 app.use(express.json());
-
+app.use(cors());
 app.use("/users", userRoutes); 
 app.use("/post", postRoutes); 
 
