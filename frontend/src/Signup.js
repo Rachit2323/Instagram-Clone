@@ -16,7 +16,8 @@ const Signup = () => {
   const [passwordIconVisible, setPasswordIconVisible] = useState(true);
 
   const dispatch = useDispatch();
-  const { message, error } = useSelector((state) => state);
+  const { message, error } = useSelector((state) => state.auth);
+  console.log('mes',message, error );
 
   const handleIconVisibility = (setIconVisible, value, inputValue) => {
     if (!inputValue) {
@@ -49,17 +50,6 @@ const Signup = () => {
     console.log(res);
   };
 
-  {
-    //      <GoogleLogin
-    //   onSuccess={credentialResponse => {
-    //     console.log(credentialResponse);
-    //   }}
-    //   onError={() => {
-    //     console.log('Login Failed');
-    //   }}
-    //   useOneTap
-    // />;
-  }
   const [formData, setFormData] = useState({
     username: "",
     email: "",

@@ -1,46 +1,4 @@
 
-// const initialState = {
-//   message: '',
-//   error: '',
-// };
-
-// const authReducer = (state = initialState, action) => {
-//   switch (action.type) {
-//     case 'SIGNUP_SUCCESS':
-//       return { ...state, message: action.payload, error: '' };
-//     case 'SIGNUP_ERROR':
-//       return { ...state, error: action.payload, message: '' };
-//     default:
-//       return state;
-//   }
-// };
-
-// export default authReducer;
-
-
-//In Create we don't need to use the copy od the state 
-
-
-// import { createReducer,createSlice  } from '@reduxjs/toolkit';
-
-// const initialState = {
-//   message: '',
-//   error: '',
-// };
-
-// const authReducer = createReducer(initialState, (builder) => {
-//   builder
-//     .addCase('SIGNUP_SUCCESS', (state, action) => {
-//       state.message = action.payload;
-//       state.error = '';
-//     })
-//     .addCase('SIGNUP_ERROR', (state, action) => {
-//       state.error = action.payload;
-//       state.message = '';
-//     });
-// });
-
-// export default authReducer;
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
@@ -48,11 +6,13 @@ const initialState = {
   token: '',
   loading: false,
   error: '',
+  success:false
 };
 
 export const signupUser = createAsyncThunk(
   'signupuser',
   async (body) => {
+console.log('signin',body);
     try {
       const result = await fetch('http://localhost:5000/users/signup', {
         method: 'POST',
@@ -63,6 +23,7 @@ export const signupUser = createAsyncThunk(
       });
 
       const data = await result.json(); // Parse response JSON
+   
       return data; // Return the parsed JSON data
     } catch (error) {
       return { error: error.message }; // Handle error
@@ -73,6 +34,7 @@ export const signupUser = createAsyncThunk(
 export const signinUser = createAsyncThunk(
   'signinuser',
   async (body) => {
+    // console.log('signin',body);
     try {
       const result = await fetch('http://localhost:5000/users/signin', {
         method: 'POST',
@@ -83,6 +45,7 @@ export const signinUser = createAsyncThunk(
       });
 
       const data = await result.json(); // Parse response JSON
+      // console.log('res',data);
       return data; // Return the parsed JSON data
     } catch (error) {
       return { error: error.message }; // Handle error
@@ -99,9 +62,11 @@ const authReducer = createSlice({
       state.loading = false;
       if (action.payload.error) {
         state.error = action.payload.error;
+        state.success=action.payload.success;
       }
       else{
         state.error=action.payload.message;
+        state.success=action.payload.success;
       }
     },
     [signupUser.pending]: (state) => {
@@ -111,9 +76,12 @@ const authReducer = createSlice({
       state.loading = false;
       if (action.payload.error) {
         state.error = action.payload.error;
+        state.success=action.payload.success;
       }
       else{
+        state.error=action.payload.message;
         state.token=action.payload.token;
+        state.success=action.payload.success;
       }
     },
     [signinUser.pending]: (state) => {

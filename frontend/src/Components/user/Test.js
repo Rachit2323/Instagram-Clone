@@ -1,30 +1,62 @@
-import React, { useState } from "react";
-import { AiOutlineBulb, AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import React, { useState,useEffect } from "react";
+import {
+  AiOutlineBulb,
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+} from "react-icons/ai";
 import "./Test.css";
 import { motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import { signupUser, signinUser } from "../../Reducers/auth.js";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Test = () => {
   const [isCardFlipped, setIsCardFlipped] = useState(false);
   const [auth, isAuth] = useState(true);
   const [showPassword, setShowPassword] = useState(true);
-  const [passowrdhintshow,setPasswordHintShow]=useState(false);
+  const [passowrdhintshow, setPasswordHintShow] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
   const [formData2, setFormData2] = useState({
-    information: "",
+    usernameOrEmail: "",
     password: "",
   });
-
+  const dispatch = useDispatch();
   const handleCardToggle = () => {
     isAuth(!auth);
     setIsCardFlipped(!isCardFlipped);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(signupUser(formData));
+  };
+
+  const {error,success}= useSelector((state) => state.user);   
+
+
+useEffect(() => {
+    if (success==false) {
+      toast.error(error); 
+    }
+    else
+    {
+        toast.success(error)
+    }
+  }, [error]); 
+
+  const handleSubmit2 = (e) => {
+    e.preventDefault();
+    console.log(formData2);
+    dispatch(signinUser(formData2));
+  };
+
   const passwordHint = () => {
-    setPasswordHintShow((prev) => !prev); 
+    setPasswordHintShow((prev) => !prev);
   };
 
   const handleChange = (e) => {
@@ -47,10 +79,10 @@ const Test = () => {
     <div className="signup_container_outer">
       <div className="sigup_wrapper_background-image">
         <div className="outer_wrapper_frame_signup_01">
-        <div className="outer_wrapper_frame_signup_01_left">
-           <span>Welcome to The Think Tribe</span>
-             <p>A place to share knowledge and better understand the world.</p>
-           </div>
+          <div className="outer_wrapper_frame_signup_01_left">
+            <span>Welcome to The Think Tribe</span>
+            <p>A place to share knowledge and better understand the world.</p>
+          </div>
           <div className="outer_wrapper_frame_signup_01_right_00">
             <motion.div
               className={`card ${isCardFlipped ? "active" : ""}`}
@@ -58,7 +90,11 @@ const Test = () => {
               animate={{ rotateY: isCardFlipped ? 180 : 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className={`outer_wrapper_frame_signup_01_right ${isCardFlipped ? "mirrored-content" : ""}`}>
+              <div
+                className={`outer_wrapper_frame_signup_01_right ${
+                  isCardFlipped ? "mirrored-content" : ""
+                }`}
+              >
                 <section>
                   <span>{auth ? "Sign Up" : "Sign in"}</span>
                   <section>
@@ -74,10 +110,10 @@ const Test = () => {
                     ) : (
                       <input
                         type="text"
-                        name="information"
+                        name="usernameOrEmail"
                         onChange={handleChange2}
                         placeholder="Enter your username or email"
-                        value={formData.information}
+                        value={formData2.usernameOrEmail}
                       />
                     )}
                   </section>
@@ -111,7 +147,7 @@ const Test = () => {
                           name="password"
                           onChange={handleChange2}
                           placeholder="Enter your password"
-                          value={formData.password}
+                          value={formData2.password}
                         />
                       )}
 
@@ -127,19 +163,29 @@ const Test = () => {
                       </div>
                     </div>
                   </section>
-                  <div className="outer_wrapper_frame_signup_01_right_01" onClick={passwordHint}>
+                  <div
+                    className="outer_wrapper_frame_signup_01_right_01"
+                    onClick={passwordHint}
+                  >
                     <AiOutlineBulb /> Password hint
-                   
                   </div>
 
-                  {passowrdhintshow&&<div className="outer_wrapper_frame_signup_01_right_01_text_below">Password should be more than 8 Characters , with 1 special character and 1 uppercase letter</div>}
+                  {passowrdhintshow && (
+                    <div className="outer_wrapper_frame_signup_01_right_01_text_below">
+                      Password should be more than 8 Characters , with 1 special
+                      character and 1 uppercase letter
+                    </div>
+                  )}
 
-                  <button>{auth ? "Sign Up" : "Sign in"}</button>
+                  <button onClick={auth ? handleSubmit : handleSubmit2}>
+                    {auth ? "Sign Up" : "Sign in"}
+                  </button>
+
                   <p>
                     {auth
                       ? "Already have an account?"
                       : "Don't have an account!"}{" "}
-                     <span onClick={handleCardToggle}>
+                    <span onClick={handleCardToggle}>
                       {auth ? "Sign in" : "Sign up"}
                     </span>
                   </p>
@@ -149,6 +195,7 @@ const Test = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
