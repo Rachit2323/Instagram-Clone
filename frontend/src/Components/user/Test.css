@@ -123,6 +123,19 @@
   cursor: pointer;
 }
 
+.outer_wrapper_frame_signup_01_right_01_text_below{
+  color: #fff;
+  text-align: left;
+  font-family: "Inter";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+
+}
+
+.outer_wrapper_frame_signup_01_right_01:hover {
+    color: black;
+}
 .outer_wrapper_frame_signup_01_right > section > button {
   margin-top: 21px;
   display: flex;
