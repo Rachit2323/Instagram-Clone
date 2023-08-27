@@ -9,29 +9,28 @@ exports.signup = async (req, res) => {
   try {
   
     const { username, email, password } = req.body;
-    console.log(username, email, password );
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ error: "Invalid email format" });
+      return res.status(400).json({success:false, error: "Invalid email format" });
     }
 
     if (password.length < 8) {
       return res
         .status(400)
-        .json({ error: "Password must be at least 8 characters long" });
+        .json({ success:false,error: "Password must be at least 8 characters long" });
     }
 
     if (!/[A-Z]/.test(password)) {
       return res
         .status(400)
-        .json({ error: "Password must contain at least one uppercase letter" });
+        .json({ success:false,error: "Password must contain at least one uppercase letter" });
     }
 
     if (!/[!@#$%^&*()_+{}\[\]:;<>,.?~\-]/.test(password)) {
       return res
         .status(400)
-        .json({ error: "Password must contain at least one special symbol" });
+        .json({ success:false,error: "Password must contain at least one special symbol" });
     }
 
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
@@ -39,7 +38,7 @@ exports.signup = async (req, res) => {
     if (existingUser) {
       return res
         .status(400)
-        .json({ error: "Username or email already exists" });
+        .json({ success:true,error: "Username or email already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -51,17 +50,18 @@ exports.signup = async (req, res) => {
 
     await newUser.save();
 
-    res.status(201).json({ message: "User registered successfully" });
+    res.status(201).json({success:true, message: "User registered successfully" });
   } catch (error) {
     res
       .status(500)
-      .json({ error: "An error occurred while registering the user" });
+      .json({ success:false,error: "An error occurred while registering the user" });
     console.log(error);
   }
 };
 
 exports.signin = async (req, res) => {
   try {
+    console.log(req.body);
     const { usernameOrEmail, password } = req.body;
 
     const user = await User.findOne({
@@ -69,13 +69,13 @@ exports.signin = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({success:false, error: "User not found" });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ error: "Incorrect password" });
+      return res.status(401).json({success:false, error: "Incorrect password" });
     }
 
     const token = jwt.sign(
@@ -84,9 +84,9 @@ exports.signin = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ message: "User signed in successfully", token });
+    res.status(200).json({ success:true,message: "User signed in successfully", token });
   } catch (error) {
-    res.status(500).json({ error: "An error occurred while signing in" });
+    res.status(500).json({ success:false,error: "An error occurred while signing in" });
     console.log(error);
   }
 };
