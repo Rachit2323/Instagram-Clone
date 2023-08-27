@@ -1,0 +1,204 @@
+.signup_container_outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.sigup_wrapper_background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(./background.png);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.outer_wrapper_frame_signup_01 {
+  margin: 176px 19%;
+  display: flex;
+  flex-direction: row;
+  gap: 62px;
+}
+
+.outer_wrapper_frame_signup_01_left {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  align-items: center;
+  margin-top: 39px;
+}
+
+.outer_wrapper_frame_signup_01_left > span {
+  color: #fff;
+  font-family: "Inter";
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.outer_wrapper_frame_signup_01_left > p {
+  color: #fff;
+  font-family: "Inter";
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.outer_wrapper_frame_signup_01_right {
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(25px);
+  width: 546px;
+  /* height: 787px; */
+}
+
+.outer_wrapper_frame_signup_01_right > section {
+  padding: 58px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 21px;
+}
+
+.outer_wrapper_frame_signup_01_right > section > section {
+  align-items: flex-start;
+  flex-direction: column;
+  display: flex;
+  width: 88%;
+  gap: 6px;
+  background-color: transparent;
+}
+
+.outer_wrapper_frame_signup_01_right > section > section > span {
+  color: #fff;
+  text-align: center;
+  font-family: "Inter";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.outer_wrapper_frame_signup_01_right > section > span {
+  color: #fff;
+  font-family: "Inter";
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+.outer_wrapper_frame_signup_01_right > section > section > input {
+  background-color: transparent;
+  width: 100%;
+  display: flex;
+  padding: 14px 20px;
+  align-items: flex-start;
+  /* width: 430px; */
+  color: #fff; /* Text color */
+  outline: none;
+  border-radius: 8px;
+  border: 1px solid #fff;
+}
+
+.outer_wrapper_frame_signup_01_right > section > section > input::placeholder {
+  color: #ccc;
+}
+
+.outer_wrapper_frame_signup_01_right_01 {
+  display: flex;
+  margin-top: 4px;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  text-align: center;
+  font-family: "Inter";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.outer_wrapper_frame_signup_01_right > section > button {
+  margin-top: 21px;
+  display: flex;
+  width: 430px;
+  padding: 14px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: 1px solid rgba(91, 91, 91, 0.5);
+  background: #fff;
+  color: #1e1e1e;
+  text-align: center;
+  font-family: "Inter";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.outer_wrapper_frame_signup_01_right > section > button:hover {
+  color: white;
+  background-color: black;
+}
+
+.outer_wrapper_frame_signup_01_right > section > p {
+  color: #fff;
+  font-family: "Inter";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.outer_wrapper_frame_signup_01_right > section > p > span {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.outer_wrapper_frame_signup_01_right > section > p > span:hover {
+  color: black;
+}
+
+.password-input-container {
+    display: flex;
+    width: 26vw;
+    /* width: 110%; */
+    gap: 10px;
+    position: relative;
+}
+
+.password-input-container > input {
+  background-color: transparent;
+  width: 100%;
+  display: flex;
+  padding: 14px 20px;
+  align-items: flex-start;
+  color: #fff; /* Text color */
+  outline: none;
+  border-radius: 8px;
+  border: 1px solid #fff;
+}
+
+.password-input-container > input::placeholder {
+  color: #ccc;
+}
+
+.eye-icon {
+    color: white;
+  position: absolute;
+  top: 50%;
+  right: 10px; 
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+
+/* Test.css */
+.mirrored-content {
+    transform: scaleX(-1);
+  }
+  
