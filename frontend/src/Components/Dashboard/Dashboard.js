@@ -10,22 +10,20 @@ import Save from "./Icons/Save.svg";
 import Share from "./Icons/Share.svg";
 import { BsBookmarkFill } from "react-icons/bs";
 import { FaSquarePlus } from "react-icons/fa6";
-import { AiFillHome } from "react-icons/ai";
-
-const openUpload = () => {
-  console.log("run");
-  return (
-    <div>
-      <div className="upload_wrapper_01">
-        <span>Upload a post</span>
-        <span className="dashboard_outline"></span>
-      </div>
-    </div>
-  );
-};
+import { AiFillHome, AiOutlineClose } from "react-icons/ai";
+import { FaImages } from "react-icons/fa6";
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("");
+  const [isopen, setIsOpen] = useState(false);
+
+  const openUpload = () => {
+    setIsOpen(true);
+  };
+
+  const closeUpload = () => {
+    setIsOpen(false);
+  };
 
   const handleInputChange = (event) => {
     setSearchText(event.target.value);
@@ -129,6 +127,22 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      {isopen && (
+        <div className="modal_wrapper">
+          <div className="upload_modal">
+            <span onClick={closeUpload}>
+              <AiOutlineClose />
+            </span>
+            <div className="upload_wrapper_01">Upload a post</div>
+
+            <p></p>
+            <section>
+              <FaImages style={{ color: "white", fontSize: "90px" }} />
+              <h2>Drag your photos here</h2>
+            </section>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
