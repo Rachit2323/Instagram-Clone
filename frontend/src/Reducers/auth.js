@@ -31,10 +31,10 @@ console.log('signin',body);
   }
 );
 
+
 export const signinUser = createAsyncThunk(
   'signinuser',
   async (body) => {
-    // console.log('signin',body);
     try {
       const result = await fetch('http://localhost:5000/users/signin', {
         method: 'POST',
@@ -44,11 +44,20 @@ export const signinUser = createAsyncThunk(
         body: JSON.stringify(body),
       });
 
-      const data = await result.json(); // Parse response JSON
-      // console.log('res',data);
-      return data; // Return the parsed JSON data
+      if (result.ok) {
+        const data = await result.json();
+        const { token } = data; 
+
+        localStorage.setItem('token', token);
+
+        return data; // Return the parsed JSON data
+      } else {
+
+        const errorData = await result.json();
+        return { error: errorData.message };
+      }
     } catch (error) {
-      return { error: error.message }; // Handle error
+      return { error: error.message }; // Handle network or other errors
     }
   }
 );
@@ -73,6 +82,7 @@ const authReducer = createSlice({
       state.loading = true;
     },
     [signinUser.fulfilled]: (state, action) => {
+
       state.loading = false;
       if (action.payload.error) {
         state.error = action.payload.error;

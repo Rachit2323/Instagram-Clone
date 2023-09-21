@@ -1,15 +1,16 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AiOutlineBulb,
   AiOutlineEye,
   AiOutlineEyeInvisible,
 } from "react-icons/ai";
-import "./Test.css";
+import "./Auth.css";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signupUser, signinUser } from "../../Reducers/auth.js";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Test = () => {
   const [isCardFlipped, setIsCardFlipped] = useState(false);
@@ -25,6 +26,7 @@ const Test = () => {
     usernameOrEmail: "",
     password: "",
   });
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleCardToggle = () => {
     isAuth(!auth);
@@ -36,23 +38,31 @@ const Test = () => {
     dispatch(signupUser(formData));
   };
 
-  const {error,success}= useSelector((state) => state.user);   
+  const { error, success } = useSelector((state) => state.user);
+  const res= useSelector((state) => state.user);
 
 
-useEffect(() => {
-    if (success==false) {
-      toast.error(error); 
+  useEffect(() => {
+    if (success == false) {
+      toast.error(error);
+    } else {
+      toast.success(error);
     }
-    else
-    {
-        toast.success(error)
-    }
-  }, [error]); 
+  }, [error]);
 
-  const handleSubmit2 = (e) => {
+  const handleSubmit2 = async (e) => {
     e.preventDefault();
-    console.log(formData2);
-    dispatch(signinUser(formData2));
+
+    try {
+      const response = await dispatch(signinUser(formData2));
+
+      if (response.payload.success) {
+        navigate("/post");
+      } else {
+      }
+    } catch (error) {
+      console.log("problem in sigin");
+    }
   };
 
   const passwordHint = () => {

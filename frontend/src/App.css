@@ -4,5 +4,6 @@ body, html {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: #0A0A0A;
 }
   /* this is used to cover everything nothing shoule be left by image to cover on the page   */
