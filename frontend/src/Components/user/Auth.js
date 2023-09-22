@@ -39,7 +39,6 @@ const Test = () => {
   };
 
   const { error, success } = useSelector((state) => state.user);
-  const res= useSelector((state) => state.user);
 
 
   useEffect(() => {

@@ -39,7 +39,6 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  height: 32px;
   padding: 8px 0px;
   justify-content: center;
   align-items: center;
@@ -49,13 +48,6 @@
   outline: none;
   background: #262626;
   color: white;
-}
-
-input[type="text"] {
-  flex: 1;
-  border: none;
-  outline: none;
-  text-align: center;
 }
 
 .dashboard_navbar_00 > section > div > img {
@@ -273,16 +265,15 @@ input[type="text"] {
   font-weight: 500;
 }
 
-.upload_modal > section > h2 {
+.upload_modal > label > h2 {
   color: #fff;
-
   font-family: "Roboto";
   font-size: 30px;
   font-style: normal;
   font-weight: 500;
 }
 
-.upload_modal > section {
+.upload_modal > label {
   cursor: pointer;
   width: 100%;
   margin-top: 24%;
@@ -300,6 +291,42 @@ input[type="text"] {
 }
 .upload_modal > span {
   cursor: pointer;
+  color: white;
+}
+
+.upload_image_00 {
+  position: absolute;
+  top: 14%;
+  left: 5%;
+  right: 5%;
+  bottom: 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.upload_image-preview {
+  margin: 18px auto;
+  width: 75%;
+  height: 85%;
+}
+.upload_image-preview > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload_image-preview_button {
+  color: #fff;
+  font-family: "Roboto";
+  height: max-content;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px;
+  width: 100%;
+  border-radius: 25px;
+  background: black;
 }
 
 .modal_wrapper {
@@ -320,12 +347,48 @@ input[type="text"] {
 }
 
 .upload_modal {
-  background: #979797;
+  position: relative;
+  background: #292929;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(231, 214, 20, 0.2);
   max-width: 555px;
   max-height: 598px;
-  height: 90%;
+  height: 95%;
   width: 90%;
+}
+
+.caption_image_00 {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.comment_modal_wrapper {
+}
+
+.comment_modal_wrapper > span {
+  background: #dbdbdb;
+  width: 100%;
+  display: flex;
+  height: 1px;
+}
+
+.comment_modal_wrapper > section {
+  display: flex;
+  margin-top: 10px;
+  align-items: self-start;
+  justify-content: space-evenly;
+}
+.comment_modal_wrapper > section > img {
+  cursor: pointer;
+}
+.comment_modal_wrapper > section > button {
+  color: #0095f6;
+  font-family: " Roboto";
+  font-size: 16px;
+  cursor: pointer;
+  font-style: normal;
+  font-weight: 500;
 }
