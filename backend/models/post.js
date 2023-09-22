@@ -26,10 +26,19 @@ const postSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  comments: {
-    type: Object, // Define comments as an object
-    default: {},   // Initialize it as an empty object
-  },
+  comments: [
+    {
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+      text: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 
   // comments: [
   //   {

@@ -61,7 +61,9 @@ exports.allPost = async (req, res) => {
   try {
     const allpost = await Post.find()
       .populate("postedBy", "username createdAt")
+      .populate('comments.userId', 'username') 
       .sort({ createdAt: -1 });
+
 
     res
       .status(200)
@@ -77,7 +79,24 @@ exports.allPost = async (req, res) => {
 
 exports.comments = async (req, res) => {
   try {
-   
+    const { postId, commentText } = req.body;
+
+    const post = await Post.findById( postId );
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    const newComment = {
+      userId: req.userId,
+      text: commentText,
+    };
+    
+    post.comments.push(newComment);  
+    //use push tho make comment inside the model schema 
+    await post.save();
+    return res
+      .status(200)
+      .json({ success: true, comment: commentText, message: "Comment Added" });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -86,6 +105,22 @@ exports.comments = async (req, res) => {
     });
   }
 };
+
+
+exports.allcomments=async(req,res)=>{
+  try{ 
+
+
+
+  }catch(error)
+  {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error: "An error occurred while fetching comments",
+    });
+  }
+}
 
 exports.userPost = async (req, res) => {
   try {
