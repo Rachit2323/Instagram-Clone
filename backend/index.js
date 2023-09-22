@@ -1,6 +1,7 @@
 const express = require("express");
 // const connectMongoDb=require('./database/connectMongoDb')
 const mongoose=require("mongoose");
+const cloudinary=require("cloudinary");
 
 const app = express();
 const userRoutes = require("./routes/user.js");
@@ -9,6 +10,12 @@ const cors=require("cors");
 
 app.use(express.json());
 app.use(cors());
+cloudinary.v2.config({
+  cloud_name:"dyedquiym",
+  api_key:"154218675918319",
+  api_secret:"d_TyO6pmhjEMcj2-CUooPs93bhI"
+
+})
 app.use("/users", userRoutes); 
 app.use("/post", postRoutes); 
 

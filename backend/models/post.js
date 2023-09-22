@@ -1,8 +1,20 @@
 const mongoose = require("mongoose");
 
 const postSchema = new mongoose.Schema({
-  title: String,
-  description: String,
+  caption: {
+    type: String,
+    required: true,
+  },
+  image: {
+    public_id: {
+      type: String,
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true,
+    },
+  },
   tags: [String],
   // userId: { type: mongoose.Types.ObjectId, ref: "User" },
   createdAt: {
@@ -14,12 +26,18 @@ const postSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  comments: [
-    {
-      type: String,
-      postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    },
-  ],
+  comments: {
+    type: Object, // Define comments as an object
+    default: {},   // Initialize it as an empty object
+  },
+
+  // comments: [
+  //   {
+  //     type: String,
+  //     postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  //   },
+  // ],
+  
   followers_count: {
     type: Number,
     default: 0,

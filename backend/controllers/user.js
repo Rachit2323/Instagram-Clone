@@ -61,7 +61,6 @@ exports.signup = async (req, res) => {
 
 exports.signin = async (req, res) => {
   try {
-    console.log(req.body);
     const { usernameOrEmail, password } = req.body;
 
     const user = await User.findOne({
@@ -83,8 +82,7 @@ exports.signin = async (req, res) => {
       SECRET_KEY,
       { expiresIn: "1h" }
     );
-
-    res.status(200).json({ success:true,message: "User signed in successfully", token });
+         res.status(200).json({ success:true,message: "User signed in successfully", token });
   } catch (error) {
     res.status(500).json({ success:false,error: "An error occurred while signing in" });
     console.log(error);
