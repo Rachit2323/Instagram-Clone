@@ -3,8 +3,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   token: "",
   loading: false,
-  error: "",
-  success: false,
+  errorsignup:"",
+  errorsignin: "",
+  successsignin: false,
+  successsignup:false,
 };
 
 export const signupUser = createAsyncThunk("signupuser", async (body) => {
@@ -51,6 +53,7 @@ export const signinUser = createAsyncThunk("signinuser", async (body) => {
   }
 });
 
+
 const authReducer = createSlice({
   name: "user",
   initialState,
@@ -59,11 +62,11 @@ const authReducer = createSlice({
     [signupUser.fulfilled]: (state, action) => {
       state.loading = false;
       if (action.payload.error) {
-        state.error = action.payload.error;
-        state.success = action.payload.success;
+        state.errorsignup = action.payload.error;
+        state.successsignup = action.payload.success;
       } else {
-        state.error = action.payload.message;
-        state.success = action.payload.success;
+        state.errorsignup = action.payload.message;
+        state.successsignup = action.payload.success;
       }
     },
     [signupUser.pending]: (state) => {
@@ -72,17 +75,18 @@ const authReducer = createSlice({
     [signinUser.fulfilled]: (state, action) => {
       state.loading = false;
       if (action.payload.error) {
-        state.error = action.payload.error;
-        state.success = action.payload.success;
+        state.errorsignin = action.payload.error;
+        state.successsignin = action.payload.success;
       } else {
-        state.error = action.payload.message;
-        state.token = action.payload.token;
-        state.success = action.payload.success;
+        state.errorsignin = action.payload.message;
+        state.successsignin = action.payload.success;
       }
     },
     [signinUser.pending]: (state) => {
       state.loading = true;
     },
+
+    
   },
 });
 

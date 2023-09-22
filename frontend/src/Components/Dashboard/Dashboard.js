@@ -11,13 +11,18 @@ import Share from "./Icons/Share.svg";
 import { BsBookmarkFill } from "react-icons/bs";
 import moment from "moment";
 import emoji from "./Icons/emoji.svg";
-
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FaSquarePlus } from "react-icons/fa6";
 import { AiFillHome, AiOutlineClose } from "react-icons/ai";
 import { FaImages } from "react-icons/fa6";
 import { ToastContainer, toast } from "react-toastify";
-import { createPost, getAllPost } from "../../Reducers/createpost.js";
+import { IoIosLogOut } from "react-icons/io";
+import {
+  createPost,
+  getAllPost,
+  addComments,
+} from "../../Reducers/createpost.js";
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("");
@@ -27,6 +32,8 @@ const Dashboard = () => {
   const [closemodal, setCloseModal] = useState(false);
   const [commentModal, setCommentModal] = useState(false);
   const [commentText, setCommentText] = useState("");
+  const [allPost, setAllPost] = useState([]); // Initialize allPost state
+  const [commentopensection, setCommentOpenSection] = useState(false);
 
   const handleCommentChange = (event) => {
     setCommentText(event.target.value);
@@ -37,7 +44,16 @@ const Dashboard = () => {
     image: null,
   });
   const posts = useSelector((state) => state.post.posts);
-  const [allPost, setAllPost] = useState([]); // Initialize allPost state
+
+  const { commentmsg, comment, commentsuceess } = useSelector(
+    (state) => state.post
+  );
+
+  useEffect(() => {
+    if (commentsuceess && commentmsg.trim() !== "") {
+      toast.success(commentmsg);
+    }
+  }, [commentsuceess, commentmsg]);
 
   useEffect(() => {
     setAllPost(posts);
@@ -63,16 +79,23 @@ const Dashboard = () => {
       });
     }
   };
+
+  const openComment = (postId) => {
+    setCommentOpenSection((prevId) => (prevId === postId ? null : postId));
+  };
+
   const addComment = (sectionId) => {
     setCommentModal((prevSections) => ({
       ...prevSections,
-      [sectionId]: !prevSections[sectionId], // Toggle the state
+      [sectionId]: !prevSections[sectionId],
     }));
   };
 
   const postComment = ({ postId, commentText }) => {
-    console.log(postId, commentText);
-    // dispatch(addComment)
+    if (commentText.trim() === "") {
+      return;
+    }
+    dispatch(addComments({ postId, commentText }));
   };
   const ImageSave = () => {
     setImageSave(true);
@@ -87,12 +110,12 @@ const Dashboard = () => {
   };
   const { error, success } = useSelector((state) => state.post);
 
-  // useEffect(() => {
-  //   if (success == true) {
-  //     setCloseModal(true);
-  //     toast.success(error);
-  //   }
-  // }, [error]);
+  useEffect(() => {
+    if (success == true) {
+      setCloseModal(true);
+      toast.success(error);
+    }
+  }, [error]);
 
   useEffect(() => {
     dispatch(getAllPost());
@@ -109,6 +132,13 @@ const Dashboard = () => {
   const closeUpload = () => {
     setIsOpen(false);
   };
+
+  const navigate=useNavigate();
+  const handleLogout=()=>{
+    localStorage.removeItem('token');
+    navigate("/");
+    toast.success("Logout successfully");
+  }
 
   const handleCaptionChange = (event) => {
     // Update the postData with the caption
@@ -140,6 +170,19 @@ const Dashboard = () => {
                 <img src={search} alt="Search" className="search-icon" />
               ) : null}
             </div>
+            <span>
+              {" "}
+              Logout
+              <IoIosLogOut
+                style={{
+                  color: "white",
+                  fontSize: "32px",
+                  cursor: "pointer",
+                  width: "30%",
+                }}
+                onClick={handleLogout}
+              />
+            </span>
           </section>
         </div>
         <span className="dashboard_outline"></span>
@@ -203,13 +246,31 @@ const Dashboard = () => {
                   <span>44,555 Likes</span>
                   <p>
                     <strong style={{ fontWeight: 500 }}>
-                      {post.postedBy.username}
+                      {post.postedBy.username + " Caption "}
                     </strong>
                     {post.caption}
-                    <strong style={{ color: "#989898" }}>more</strong>
+                    {/* <strong style={{ color: "#989898" }}>more</strong> */}
                   </p>
-                  <h5>View all 33 comments</h5>
-                  {commentModal[post._id] && (
+                  <h5 onClick={() => openComment(post._id)}>
+                    View all {post.comments.length} comments
+                  </h5>
+                  {commentopensection === post._id &&
+                    post.comments.map((item, index) => (
+                      <div key={index}>
+                        <h5
+                          style={{
+                            color: "#d2cbcb",
+                            marginLeft: "10px",
+                            fontSize: "14px",
+                          }}
+                        >
+                          {`By ${item.userId.username} : `}
+                          <span style={{ color: "gray" }}>{item.text}</span>
+                        </h5>
+                      </div>
+                    ))}
+
+                  {commentModal[post._id] && !commentsuceess && (
                     <div className="comment_modal_wrapper">
                       <span></span>
                       <section>

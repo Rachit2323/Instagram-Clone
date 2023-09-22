@@ -24,6 +24,19 @@
   justify-content: space-between;
 }
 
+.dashboard_navbar_00 >section> span{
+color: #FFF;
+width: 15%;
+font-family: "Roboto";
+display: flex;
+align-items: center;
+font-size: 19px;
+gap: 5px;
+font-style: normal;
+font-weight: 500;
+line-height: 20px; /* 142.857% */
+}
+
 .dashboard_navbar_00 > section > div {
   /* by this search img allign at the center */
   display: flex;

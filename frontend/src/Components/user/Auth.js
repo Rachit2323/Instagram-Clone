@@ -38,16 +38,17 @@ const Test = () => {
     dispatch(signupUser(formData));
   };
 
-  const { error, success } = useSelector((state) => state.user);
+  const { errorsignin, successsignin } = useSelector((state) => state.user);
 
 
   useEffect(() => {
-    if (success == false) {
-      toast.error(error);
-    } else {
-      toast.success(error);
+    if (successsignin == false) {
+      toast.error(errorsignin);
+    } else if(successsignin===true){
+      console.log(errorsignin);
+      toast.success(errorsignin);
     }
-  }, [error]);
+  }, [errorsignin]);
 
   const handleSubmit2 = async (e) => {
     e.preventDefault();

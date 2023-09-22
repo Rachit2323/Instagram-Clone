@@ -6,6 +6,9 @@ const initialState = {
   loading: false,
   error: "",
   success: false,
+  comment:"",
+  commentmsg:"",
+  commentsuceess:false,
 };
 
 export const createPost = createAsyncThunk(
@@ -57,6 +60,34 @@ export const getAllPost = createAsyncThunk(
 
 
 
+
+export const addComments = createAsyncThunk(
+  "addcomments",
+  async ({ postId, commentText }) => {
+
+    try {
+
+      const token = localStorage.getItem("token");
+   
+      const result = await fetch("http://localhost:5000/post/addComment", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ postId, commentText }), 
+
+      });
+
+      const data = await result.json();
+      return data;
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+);
+
+
 const postReducer = createSlice({
   name: "post",
   initialState,
@@ -90,7 +121,26 @@ const postReducer = createSlice({
     },
     [getAllPost.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.error.message;
+      state.error = action.payload.error;
+    },
+
+    [addComments.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.commentsuceess = action.payload.success;
+
+      if (action.payload.error) {
+        state.error = action.payload.error;
+      } else {
+        state.comment = action.payload.comment;
+        state.commentmsg = action.payload.message;
+      }
+    },
+    [addComments.pending]: (state) => {
+      state.loading = true;
+    },
+    [addComments.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.message;
     },
     
 
