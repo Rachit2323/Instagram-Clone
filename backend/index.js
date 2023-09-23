@@ -12,13 +12,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use(express.json());
-app.use(
-  cors({
-    origin: 'http://localhost', 
-    methods: ['POST', 'GET'],   
-
-  })
-);
+app.use(cors());
 cloudinary.v2.config({
   cloud_name: "dyedquiym",
   api_key: "154218675918319",
