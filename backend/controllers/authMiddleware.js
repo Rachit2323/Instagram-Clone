@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = "knsincjjscbjdcjbbbej3e3u8b";
+
 
 const isAuthenticated = (req, res, next) => {
     const authorizationHeader = req.header('Authorization');
@@ -11,7 +11,7 @@ const isAuthenticated = (req, res, next) => {
     const token = authorizationHeader.slice(7); // Remove 'Bearer ' prefix
   
     try {
-        const decoded = jwt.verify(token, SECRET_KEY);
+        const decoded = jwt.verify(token,  process.env.JWT_SECRET);
         req.userId = decoded?.userId;
         next();
     } catch (err) {

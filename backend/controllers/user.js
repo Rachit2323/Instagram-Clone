@@ -79,7 +79,7 @@ exports.signin = async (req, res) => {
 
     const token = jwt.sign(
       { userId: user._id, username: user.username },
-      SECRET_KEY,
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
          res.status(200).json({ success:true,message: "User signed in successfully", token });
@@ -114,7 +114,7 @@ exports.googleSignin = async (req, res) => {
     // Generate a token
     const token = jwt.sign(
       { userId: user._id, email: user.email },
-      jwtSecretKey,
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
