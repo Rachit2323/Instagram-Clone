@@ -13,7 +13,7 @@ if (process.env.NODE_ENV !== "production") {
 
 app.use(express.json());
 app.use(cors({
-  origin: "https://650f056de70eae41f2e9f46e--charming-belekoy-1d7e17.netlify.app"
+origin: "https://charming-belekoy-1d7e17.netlify.app"
 }));
 
 cloudinary.v2.config({
