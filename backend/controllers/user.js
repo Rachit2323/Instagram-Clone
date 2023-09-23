@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const User = require("../models/user");
 const { OAuth2Client } = require("google-auth-library");
 const SECRET_KEY = "knsincjjscbjdcjbbbej3e3u8b";
 const googleClientId = "431980266310-k4b3dj9i3rqpmqag7bukt5b66h77pnae.apps.googleusercontent.com";
