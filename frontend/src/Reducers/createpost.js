@@ -22,7 +22,7 @@ export const createPost = createAsyncThunk(
       formData.append("caption", caption);
       formData.append("file", image);
 
-      const result = await fetch("https://iinsta.onrender.com/post/createpost", {
+      const result = await fetch("https://in-4vvm.onrender.com/post/createpost", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ export const getAllPost = createAsyncThunk(
     try {
       const token = localStorage.getItem("token");
    
-      const result = await fetch("https://iinsta.onrender.com/post/allpost", {
+      const result = await fetch("https://in-4vvm.onrender.com/post/allpost", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ export const addComments = createAsyncThunk(
 
       const token = localStorage.getItem("token");
    
-      const result = await fetch("https://iinsta.onrender.com/post/addComment", {
+      const result = await fetch("https://in-4vvm.onrender.com/post/addComment", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
