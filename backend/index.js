@@ -23,7 +23,7 @@ app.use("/users", userRoutes);
 app.use("/post", postRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Hello");
+  res.send("Hello I am here");
 });
 
 mongoose
