@@ -14,7 +14,7 @@ if (process.env.NODE_ENV !== "production") {
 app.use(express.json());
 
 app.use(cors({
-  origin: "https://charming-belekoy-1d7e17.netlify.app"
+  origin: ["https://charming-belekoy-1d7e17.netlify.app", "http://localhost:3000"]
 }));
 
 
