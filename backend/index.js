@@ -22,6 +22,10 @@ cloudinary.v2.config({
 app.use("/users", userRoutes);
 app.use("/post", postRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Hello");
+});
+
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
