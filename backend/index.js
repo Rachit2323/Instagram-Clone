@@ -12,7 +12,10 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "https://650f056de70eae41f2e9f46e--charming-belekoy-1d7e17.netlify.app/"
+}));
+
 cloudinary.v2.config({
   cloud_name: "dyedquiym",
   api_key: "154218675918319",
