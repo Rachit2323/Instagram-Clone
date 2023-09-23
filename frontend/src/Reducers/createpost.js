@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-
+ const API="https://in-4vvm.onrender.com/";
+// const API="http://localhost:4000/"
 const initialState = {
   posts:[],
   loading: false,
@@ -22,7 +23,7 @@ export const createPost = createAsyncThunk(
       formData.append("caption", caption);
       formData.append("file", image);
 
-      const result = await fetch("https://in-4vvm.onrender.com/post/createpost", {
+      const result = await fetch(`${API}post/createpost`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -45,7 +46,7 @@ export const getAllPost = createAsyncThunk(
     try {
       const token = localStorage.getItem("token");
    
-      const result = await fetch("https://in-4vvm.onrender.com/post/allpost", {
+      const result = await fetch(`${API}post/allpost`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -71,7 +72,7 @@ export const addComments = createAsyncThunk(
 
       const token = localStorage.getItem("token");
    
-      const result = await fetch("https://in-4vvm.onrender.com/post/addComment", {
+      const result = await fetch(`${API}post/addComment`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+ const API="https://in-4vvm.onrender.com/";
+//  const API="http://localhost:4000/"
 const initialState = {
   token: "",
   loading: false,
@@ -11,7 +12,7 @@ const initialState = {
 
 export const signupUser = createAsyncThunk("signupuser", async (body) => {
   try {
-    const result = await fetch("https://in-4vvm.onrender.com/users/signup", {
+    const result = await fetch(`${API}users/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +30,7 @@ export const signupUser = createAsyncThunk("signupuser", async (body) => {
 
 export const signinUser = createAsyncThunk("signinuser", async (body) => {
   try {
-    const result = await fetch("https://in-4vvm.onrender.com/users/signin", {
+    const result = await fetch(`${API}users/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
