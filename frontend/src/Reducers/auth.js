@@ -11,7 +11,7 @@ const initialState = {
 
 export const signupUser = createAsyncThunk("signupuser", async (body) => {
   try {
-    const result = await fetch("https://startup-amber-gamma.vercel.app/users/signup", {
+    const result = await fetch("https://iinsta.onrender.com/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +29,7 @@ export const signupUser = createAsyncThunk("signupuser", async (body) => {
 
 export const signinUser = createAsyncThunk("signinuser", async (body) => {
   try {
-    const result = await fetch("https://startup-amber-gamma.vercel.app/users/signin", {
+    const result = await fetch("https://iinsta.onrender.com/users/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
