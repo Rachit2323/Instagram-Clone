@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import {
   AiOutlineBulb,
   AiOutlineEye,
@@ -26,6 +26,7 @@ const Test = () => {
     usernameOrEmail: "",
     password: "",
   });
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleCardToggle = () => {
@@ -38,17 +39,23 @@ const Test = () => {
     dispatch(signupUser(formData));
   };
 
-  const { errorsignin, successsignin } = useSelector((state) => state.user);
+  const { errorsignin, successsignin, errorsignup, successsignup } =
+    useSelector((state) => state.user);
 
 
   useEffect(() => {
-    if (successsignin == false) {
-      toast.error(errorsignin);
-    } else if(successsignin===true){
-      console.log(errorsignin);
-      toast.success(errorsignin);
+    if(successsignin==false && successsignup === true && errorsignup !== "") {
+      toast.success(errorsignup);
     }
-  }, [errorsignin]);
+  }, [successsignup, errorsignup]);
+
+  useEffect(() => {
+    if (successsignin == false && errorsignin !== "") {
+      toast.success(errorsignin);
+    } else if (successsignin === true) {
+      toast.success("Logout successfully");
+    }
+  }, [errorsignin,successsignin]);
 
   const handleSubmit2 = async (e) => {
     e.preventDefault();
@@ -145,7 +152,7 @@ const Test = () => {
                     <div className="password-input-container">
                       {auth ? (
                         <input
-                          type={showPassword ? "text" : "password"}
+                          type={!showPassword ? "text" : "password"}
                           name="password"
                           onChange={handleChange}
                           placeholder="Enter your password"
@@ -153,7 +160,7 @@ const Test = () => {
                         />
                       ) : (
                         <input
-                          type={showPassword ? "text" : "password"}
+                          type={!showPassword ? "text" : "password"}
                           name="password"
                           onChange={handleChange2}
                           placeholder="Enter your password"

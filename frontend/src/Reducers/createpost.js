@@ -5,6 +5,8 @@ const initialState = {
   posts:[],
   loading: false,
   error: "",
+  createmg:"",
+  createsuccess:false,
   success: false,
   comment:"",
   commentmsg:"",
@@ -96,11 +98,11 @@ const postReducer = createSlice({
     [createPost.fulfilled]: (state, action) => {
       state.loading = false;
       if (action.payload.error) {
-        state.error = action.payload.error;
-        state.success = action.payload.success;
+        state.createmg = action.payload.error;
+        state.createsuccess = action.payload.success;
       } else {
-        state.error = action.payload.message;
-        state.success = action.payload.success;
+        state.createmg = action.payload.message;
+        state.createsuccess = action.payload.success;
       }
     },
     [createPost.pending]: (state) => {

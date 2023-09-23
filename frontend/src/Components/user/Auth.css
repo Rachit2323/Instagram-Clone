@@ -75,7 +75,7 @@
   align-items: flex-start;
   flex-direction: column;
   display: flex;
-  width: 88%;
+  width: 100%;
   gap: 6px;
   background-color: transparent;
 }

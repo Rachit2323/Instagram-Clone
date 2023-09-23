@@ -17,6 +17,8 @@ import { FaSquarePlus } from "react-icons/fa6";
 import { AiFillHome, AiOutlineClose } from "react-icons/ai";
 import { FaImages } from "react-icons/fa6";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { IoIosLogOut } from "react-icons/io";
 import {
   createPost,
@@ -45,15 +47,13 @@ const Dashboard = () => {
   });
   const posts = useSelector((state) => state.post.posts);
 
-  const { commentmsg, comment, commentsuceess } = useSelector(
-    (state) => state.post
-  );
+  const { commentmsg, commentsuceess } = useSelector((state) => state.post);
 
   useEffect(() => {
     if (commentsuceess && commentmsg.trim() !== "") {
       toast.success(commentmsg);
     }
-  }, [commentsuceess, commentmsg]);
+  }, [commentsuceess]);
 
   useEffect(() => {
     setAllPost(posts);
@@ -105,17 +105,24 @@ const Dashboard = () => {
     if (postData.image === null) {
       return;
     }
-
     dispatch(createPost(postData));
   };
-  const { error, success } = useSelector((state) => state.post);
+  const { error, success, createmg, createsuccess } = useSelector(
+    (state) => state.post
+  );
+  const { errorsignin, successsignin } = useSelector((state) => state.user);
+  useEffect(() => {
+    if (successsignin === true) {
+      toast.success(errorsignin);
+    }
+  }, [errorsignin]);
 
   useEffect(() => {
-    if (success == true) {
+    if (createsuccess == true) {
       setCloseModal(true);
-      toast.success(error);
+      toast.success(createmg);
     }
-  }, [error]);
+  }, [createmg]);
 
   useEffect(() => {
     dispatch(getAllPost());
@@ -133,12 +140,12 @@ const Dashboard = () => {
     setIsOpen(false);
   };
 
-  const navigate=useNavigate();
-  const handleLogout=()=>{
-    localStorage.removeItem('token');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
     navigate("/");
-    toast.success("Logout successfully");
-  }
+  };
 
   const handleCaptionChange = (event) => {
     // Update the postData with the caption
@@ -158,7 +165,7 @@ const Dashboard = () => {
         <div className="dashboard_navbar_00">
           <section>
             <img src={logo} alt="Logo" />
-            <div className="search-input">
+            {/* <div className="search-input">
               <input
                 type="text"
                 placeholder="Search"
@@ -169,7 +176,7 @@ const Dashboard = () => {
               {searchText === "" ? (
                 <img src={search} alt="Search" className="search-icon" />
               ) : null}
-            </div>
+            </div> */}
             <span>
               {" "}
               Logout
@@ -189,26 +196,26 @@ const Dashboard = () => {
         <div className="dashboard_all_main">
           <div className="dashboard_story_wrapper_left">
             <section>
-              <span>
+              {/* <span>
                 {" "}
                 <AiFillHome /> Home{" "}
-              </span>
+              </span> */}
               <span onClick={openUpload}>
                 <FaSquarePlus /> Create{" "}
               </span>
-              <span>
+              {/* <span>
                 <BsBookmarkFill /> Saved
-              </span>
+              </span> */}
             </section>
           </div>
 
           <div className="dashboard_story_wrapper_mid">
-            <div className="dashboard_story_wrapper">
+            {/* <div className="dashboard_story_wrapper">
               <section>
                 <img src={mine} />
                 <span>Rachit sharma</span>
               </section>
-            </div>
+            </div> */}
 
             {allPost.map((post) => (
               <div className="post_wrapper_00" key={post._id}>
@@ -227,26 +234,30 @@ const Dashboard = () => {
                     style={{ color: "white", cursor: "pointer" }}
                   />
                 </div>
+
                 <div className="post_wrapper_02">
                   <img src={post.image.url} alt="Post Image" />
                 </div>
                 <div className="post_wrapper_03">
                   <section>
                     <span>
-                      <img src={Like} alt="Like" />
+                      {/* <img src={Like} alt="Like" /> */}
                       <img
                         src={Comment}
                         alt="Comment"
                         onClick={() => addComment(post._id)}
                       />
-                      <img src={Share} alt="Share" />
+                      {/* <img src={Share} alt="Share" /> */}
                     </span>
-                    <img src={Save} alt="Save" />
+                    {/* <img src={Save} alt="Save" /> */}
                   </section>
-                  <span>44,555 Likes</span>
+                  {/* <span>44,555 Likes</span> */}
                   <p>
                     <strong style={{ fontWeight: 500 }}>
-                      {post.postedBy.username + " Caption "}
+                      {
+                      // post.postedBy.username
+                      //  + 
+                       " Caption -> "}
                     </strong>
                     {post.caption}
                     {/* <strong style={{ color: "#989898" }}>more</strong> */}
@@ -308,7 +319,7 @@ const Dashboard = () => {
             ))}
           </div>
 
-          <div className="dashboard_story_wrapper_right">
+          {/* <div className="dashboard_story_wrapper_right">
             <section>
               <div className="post_wrapper_01">
                 <div className="post_wrapper_011">
@@ -321,7 +332,7 @@ const Dashboard = () => {
                 <FiSettings style={{ color: "white", cursor: "pointer" }} />
               </div>
             </section>
-          </div>
+          </div> */}
         </div>
       </div>
       {isopen && !closemodal && (

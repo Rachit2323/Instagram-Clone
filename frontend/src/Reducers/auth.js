@@ -3,10 +3,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
   token: "",
   loading: false,
-  errorsignup:"",
+  errorsignup: "",
   errorsignin: "",
   successsignin: false,
-  successsignup:false,
+  successsignup: false,
 };
 
 export const signupUser = createAsyncThunk("signupuser", async (body) => {
@@ -19,11 +19,11 @@ export const signupUser = createAsyncThunk("signupuser", async (body) => {
       body: JSON.stringify(body),
     });
 
-    const data = await result.json(); // Parse response JSON
+    const data = await result.json();
 
-    return data; // Return the parsed JSON data
+    return data;
   } catch (error) {
-    return { error: error.message }; // Handle error
+    return { error: error.message };
   }
 });
 
@@ -53,7 +53,6 @@ export const signinUser = createAsyncThunk("signinuser", async (body) => {
   }
 });
 
-
 const authReducer = createSlice({
   name: "user",
   initialState,
@@ -71,7 +70,9 @@ const authReducer = createSlice({
     },
     [signupUser.pending]: (state) => {
       state.loading = true;
+ 
     },
+ 
     [signinUser.fulfilled]: (state, action) => {
       state.loading = false;
       if (action.payload.error) {
@@ -85,8 +86,6 @@ const authReducer = createSlice({
     [signinUser.pending]: (state) => {
       state.loading = true;
     },
-
-    
   },
 });
 
