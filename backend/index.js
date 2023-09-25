@@ -7,16 +7,23 @@ const app = express();
 const userRoutes = require("./routes/user.js");
 const postRoutes = require("./routes/post.js");
 const cors = require("cors");
-if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
-}
+
 
 app.use(express.json());
+// app.use(
+//   cors({
+//     origin: 'http://localhost:3000', // Replace with your frontend's URL
+//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allow the required HTTP methods
+//     credentials: true, // Enable credentials (e.g., cookies)
+//   })
+// );
 
-app.use(cors({
-  origin: ["https://charming-belekoy-1d7e17.netlify.app", "http://localhost:3000"]
-}));
+// app.use(cors({
+//   origin: ["https://charming-belekoy-1d7e17.netlify.app", "http://localhost:3000"]
+// }));
 
+app.use(cors());
 
 cloudinary.v2.config({
   cloud_name: "dyedquiym",

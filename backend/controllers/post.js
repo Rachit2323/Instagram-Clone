@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { findByIdAndUpdate } = require("../models/post");
 const Post = require("../models/post");
+const User = require("../models/user.js");
 
 const Story = require("../models/story.js");
 const getDataUri = require("./dataUri.js");
@@ -61,10 +62,34 @@ exports.allPost = async (req, res) => {
   try {
     const allpost = await Post.find()
       .populate("postedBy", "username createdAt")
-      .populate('comments.userId', 'username') 
+      .populate("comments.userId", "username")
+      .populate("likes.userId", "username")
       .sort({ createdAt: -1 });
+    const userDetails = req.userId;
+    
 
+    res.status(200).json({
+      success: true,
+      allpost,
+      userDetails,
+      message: "Posts fetched successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error: "An error occurred while fetching posts",
+    });
+  }
+};
 
+exports.myPost = async (req, res) => {
+  try {
+    const allpost = await Post.find(req.userId)
+      .populate("postedBy", "username createdAt")
+      .populate("comments.userId", "username")
+      .populate("likes.userId", "username")
+      .sort({ createdAt: -1 });
     res
       .status(200)
       .json({ success: true, allpost, message: "Posts fetched successfully" });
@@ -81,7 +106,7 @@ exports.comments = async (req, res) => {
   try {
     const { postId, commentText } = req.body;
 
-    const post = await Post.findById( postId );
+    const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
@@ -90,9 +115,9 @@ exports.comments = async (req, res) => {
       userId: req.userId,
       text: commentText,
     };
-    
-    post.comments.push(newComment);  
-    //use push tho make comment inside the model schema 
+
+    post.comments.push(newComment);
+    //use push tho make comment inside the model schema
     await post.save();
     return res
       .status(200)
@@ -106,21 +131,16 @@ exports.comments = async (req, res) => {
   }
 };
 
-
-exports.allcomments=async(req,res)=>{
-  try{ 
-
-
-
-  }catch(error)
-  {
+exports.allcomments = async (req, res) => {
+  try {
+  } catch (error) {
     console.log(error);
     res.status(500).json({
       success: false,
       error: "An error occurred while fetching comments",
     });
   }
-}
+};
 
 exports.userPost = async (req, res) => {
   try {
@@ -136,28 +156,32 @@ exports.userPost = async (req, res) => {
   }
 };
 
-exports.like = async (req, res) => {
+exports.handlelike = async (req, res) => {
   try {
-    const postId = req.body.PostId;
+    const postId = req.body.postId;
     const userId = req.userId;
-
-    // Check if the user has already liked the post
     const post = await Post.findById(postId);
     if (post.likes.includes(userId)) {
-      return res
-        .status(400)
-        .json({ success: false, error: "Post already liked" });
+      await Post.findByIdAndUpdate(
+        req.body.postId,
+        {
+          $pull: { likes: req.userId },
+        },
+        { new: true }
+      ); // it is used to give  recently updated data
+
+      res.status(200).json({ success: true, message: "Post Unliked" });
+    } else {
+      await Post.findByIdAndUpdate(
+        req.body.postId,
+        {
+          $push: { likes: req.userId },
+        },
+        { new: true }
+      ); // it is used to give  recently updated data
+
+      res.status(200).json({ success: true, message: "Post liked" });
     }
-
-    await Post.findByIdAndUpdate(
-      req.body.PostId,
-      {
-        $push: { likes: req.userId },
-      },
-      { new: true }
-    ); // it is used to give  recently updated data
-
-    res.status(200).json({ success: true, message: "Post liked" });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -166,27 +190,39 @@ exports.like = async (req, res) => {
   }
 };
 
-exports.unlike = async (req, res) => {
+exports.savepost = async (req, res) => {
   try {
-    const postId = req.body.PostId;
+    const postId = req.body.postId;
     const userId = req.userId;
 
-    // Check if the user has already liked the post
     const post = await Post.findById(postId);
-    if (post.likes.includes(userId)) {
+    if (post.SavedBy.includes(userId)) {
       await Post.findByIdAndUpdate(
-        req.body.PostId,
+        req.body.postId,
         {
-          $pull: { likes: req.userId },
+          $pull: { SavedBy: userId },
         },
         { new: true }
       ); // it is used to give  recently updated data
+
+      res
+        .status(200)
+        .json({ success: true, message: "Post Removed from save" });
+    } else {
+      await Post.findByIdAndUpdate(
+        req.body.postId,
+        {
+          $push: { SavedBy: userId },
+        },
+        { new: true }
+      ); // it is used to give  recently updated data
+
+      res.status(200).json({ success: true, message: "Post Saved" });
     }
-    res.status(200).json({ success: true, message: "Post Unliked" });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: "An error occurred while liking the post",
+      error: "An error occurred while Saving post",
     });
   }
 };

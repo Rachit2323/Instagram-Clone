@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema({
   googleId:{
     type:String
   },
+  // savepost: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'Post',
+  //   },
+  // ],
   status:{
     type:Number,
     default:1,  // 0-> inactive 1 ->active

@@ -21,7 +21,12 @@ const postSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
   share_count: {
     type: Number,
     default: 0,
@@ -30,7 +35,7 @@ const postSchema = new mongoose.Schema({
     {
       userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: "User",
         required: true,
       },
       text: {
@@ -40,21 +45,20 @@ const postSchema = new mongoose.Schema({
     },
   ],
 
+  SavedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+
   // comments: [
   //   {
   //     type: String,
   //     postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   //   },
   // ],
-  
-  followers_count: {
-    type: Number,
-    default: 0,
-  },
-  followings_count: {
-    type: Number,
-    default: 0,
-  },
+
   postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
 
