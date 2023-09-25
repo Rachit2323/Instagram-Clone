@@ -1,0 +1,122 @@
+.setting_wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  flex-direction: column;
+}
+
+.setting_navbar_00 {
+  display: flex;
+  width: 50%;
+  margin: 3% auto;
+  gap: 70px;
+  align-items: center;
+  justify-content: center;
+}
+
+.setting_navbar_00 > img {
+  width: 152px;
+  height: 152px;
+  border-radius: 100px;
+}
+
+.setting_navbar_00 > section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.setting_navbar_00 > section > span {
+  width: 100%;
+  color: #fff;
+  font-family: "Roboto";
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 300;
+}
+
+.setting_navbar_00 > section > section {
+  display: flex;
+  gap: 32px;
+}
+
+.setting_navbar_00 > section > section > span {
+  color: #fff;
+  font-family: "Roboto";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.setting_wrapper > span {
+  width: 90%;
+  height: 1px;
+  background: #282828;
+}
+
+.setting_wrapper_types {
+  display: flex;
+  width: 18%;
+  justify-content: space-between;
+}
+
+.setting_wrapper_types > span > p {
+  width: 100%;
+  height: 1px;
+  background: #fff;
+}
+.setting_wrapper_types > span {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.setting_wrapper_types > span > span {
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: "Roboto";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.setting_grid-container {
+  margin-top: 20px;
+  width: 75%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 16px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  max-height: 60vh;
+  height: 100%;
+}
+
+.setting_grid-item {
+  width: 85%;
+  height: 50%;
+}
+
+.setting_grid-item > img {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.setting_grid-item > section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.setting_grid-item > section > span {
+  color: gray;
+  font-family: "Roboto";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+}

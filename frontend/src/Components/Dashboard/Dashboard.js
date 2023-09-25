@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
-import logo from "./Icons/Logo.png";
-import search from "./Icons/search.svg";
+
 import mine from "./Icons/mineee.jpg";
 import { FiMoreHorizontal, FiSettings } from "react-icons/fi";
 import Like from "./Icons/Heart.svg";
 import Comment from "./Icons/Comment.svg";
 import Save from "./Icons/Save.svg";
 import Share from "./Icons/Share.svg";
-import { BsBookmarkFill } from "react-icons/bs";
+import { BsBookmarkFill, BsBookmark } from "react-icons/bs";
 import moment from "moment";
 import emoji from "./Icons/emoji.svg";
 import { useNavigate } from "react-router-dom";
@@ -18,13 +17,16 @@ import { AiFillHome, AiOutlineClose } from "react-icons/ai";
 import { FaImages } from "react-icons/fa6";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import redHeart from "./Icons/RedHeart.svg";
 
-import { IoIosLogOut } from "react-icons/io";
 import {
   createPost,
   getAllPost,
   addComments,
+  addLikes,
+  savedpost,
 } from "../../Reducers/createpost.js";
+import Navbar from "../Navbar/Navbar.js";
 
 const Dashboard = () => {
   const [searchText, setSearchText] = useState("");
@@ -34,11 +36,15 @@ const Dashboard = () => {
   const [closemodal, setCloseModal] = useState(false);
   const [commentModal, setCommentModal] = useState(false);
   const [commentText, setCommentText] = useState("");
-  const [allPost, setAllPost] = useState([]); // Initialize allPost state
+  const [allPost, setAllPost] = useState([]);
   const [commentopensection, setCommentOpenSection] = useState(false);
 
   const handleCommentChange = (event) => {
     setCommentText(event.target.value);
+  };
+
+  const openSetting = () => {
+    navigate("/setting");
   };
 
   const [postData, setPostData] = useState({
@@ -46,9 +52,13 @@ const Dashboard = () => {
     image: null,
   });
   const posts = useSelector((state) => state.post.posts);
-
-  const { commentmsg, commentsuceess } = useSelector((state) => state.post);
-
+  const userDetails = useSelector((state) => state.post.userDetails);
+  const savedmsg = useSelector((state) => state.post.savedmsg);
+  const savedsuccess = useSelector((state) => state.post.savedsuccess);
+  console.log(savedsuccess, savedmsg);
+  const { commentmsg, commentsuceess, likesuccess, likemsg } = useSelector(
+    (state) => state.post
+  );
   useEffect(() => {
     if (commentsuceess && commentmsg.trim() !== "") {
       toast.success(commentmsg);
@@ -57,8 +67,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     setAllPost(posts);
+    // setUserDetails()
   }, [posts]);
-  // console.log(allPost);
 
   const dispatch = useDispatch();
   const handleImageUpload = (event) => {
@@ -91,6 +101,9 @@ const Dashboard = () => {
     }));
   };
 
+  const savePost = (postId) => {
+    dispatch(savedpost(postId));
+  };
   const postComment = ({ postId, commentText }) => {
     if (commentText.trim() === "") {
       return;
@@ -140,12 +153,17 @@ const Dashboard = () => {
     setIsOpen(false);
   };
 
-  const navigate = useNavigate();
+  // const handleLike = (Id) => {
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
+  //   setLiked(!liked);
+  // };
+
+  const handleLike = (postId) => {
+    // Dispatch the action to like the post
+    dispatch(addLikes(postId.postId));
   };
+
+  const navigate = useNavigate();
 
   const handleCaptionChange = (event) => {
     // Update the postData with the caption
@@ -159,13 +177,14 @@ const Dashboard = () => {
     setSearchText(event.target.value);
   };
 
+  console.log(allPost);
   return (
     <div className="dashboard_wrapper">
       <div className="dashboard_wrapper_00">
-        <div className="dashboard_navbar_00">
+        {/* <div className="dashboard_navbar_00">
           <section>
             <img src={logo} alt="Logo" />
-            {/* <div className="search-input">
+            <div className="search-input">
               <input
                 type="text"
                 placeholder="Search"
@@ -176,7 +195,7 @@ const Dashboard = () => {
               {searchText === "" ? (
                 <img src={search} alt="Search" className="search-icon" />
               ) : null}
-            </div> */}
+            </div>
             <span>
               {" "}
               Logout
@@ -191,31 +210,32 @@ const Dashboard = () => {
               />
             </span>
           </section>
-        </div>
+        </div> */}
+        <Navbar />
         <span className="dashboard_outline"></span>
         <div className="dashboard_all_main">
           <div className="dashboard_story_wrapper_left">
             <section>
-              {/* <span>
+              <span>
                 {" "}
                 <AiFillHome /> Home{" "}
-              </span> */}
+              </span>
               <span onClick={openUpload}>
                 <FaSquarePlus /> Create{" "}
               </span>
-              {/* <span>
+              <span>
                 <BsBookmarkFill /> Saved
-              </span> */}
+              </span>
             </section>
           </div>
 
           <div className="dashboard_story_wrapper_mid">
-            {/* <div className="dashboard_story_wrapper">
+            <div className="dashboard_story_wrapper">
               <section>
                 <img src={mine} />
                 <span>Rachit sharma</span>
               </section>
-            </div> */}
+            </div>
 
             {allPost.map((post) => (
               <div className="post_wrapper_00" key={post._id}>
@@ -241,23 +261,51 @@ const Dashboard = () => {
                 <div className="post_wrapper_03">
                   <section>
                     <span>
-                      {/* <img src={Like} alt="Like" /> */}
+                      <img
+                        src={post.likes.includes(userDetails) ? redHeart : Like}
+                        alt="Like"
+                        onClick={() => handleLike({ postId: post._id })}
+                      />
+
                       <img
                         src={Comment}
                         alt="Comment"
                         onClick={() => addComment(post._id)}
                       />
-                      {/* <img src={Share} alt="Share" /> */}
+
+                      <img src={Share} alt="Share" />
                     </span>
-                    {/* <img src={Save} alt="Save" /> */}
+                    {post.SavedBy.includes(userDetails) && (
+                      <BsBookmarkFill
+                        style={{
+                          color: "white",
+                          fontSize: "25px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => savePost(post._id)}
+                      />
+                    )}
+                    {!post.SavedBy.includes(userDetails) && (
+                      <BsBookmark
+                        style={{
+                          color: "white",
+                          fontSize: "25px",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => savePost(post._id)}
+                      />
+                    )}
                   </section>
-                  {/* <span>44,555 Likes</span> */}
+
+                  <span>{post.likes.length} Likes</span>
+
                   <p>
-                    <strong style={{ fontWeight: 500 }}>
+                    <strong style={{ fontWeight: "500" }}>
                       {
-                      // post.postedBy.username
-                      //  + 
-                       " Caption -> "}
+                        // post.postedBy.username
+                        //  +
+                        " Caption -> "
+                      }
                     </strong>
                     {post.caption}
                     {/* <strong style={{ color: "#989898" }}>more</strong> */}
@@ -319,20 +367,23 @@ const Dashboard = () => {
             ))}
           </div>
 
-          {/* <div className="dashboard_story_wrapper_right">
+          <div className="dashboard_story_wrapper_right">
             <section>
               <div className="post_wrapper_01">
                 <div className="post_wrapper_011">
                   <img src={mine} />
                   <section>
-                    <span>Rachit</span>
+                    <span>{allPost[0]?.postedBy?.username}</span>
                     <span style={{ fontWeight: "400" }}>Delhi , India</span>
                   </section>
                 </div>
-                <FiSettings style={{ color: "white", cursor: "pointer" }} />
+                <FiSettings
+                  style={{ color: "white", cursor: "pointer" }}
+                  onClick={openSetting}
+                />
               </div>
             </section>
-          </div> */}
+          </div>
         </div>
       </div>
       {isopen && !closemodal && (

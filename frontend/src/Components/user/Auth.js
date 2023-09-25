@@ -42,7 +42,6 @@ const Test = () => {
   const { errorsignin, successsignin, errorsignup, successsignup } =
     useSelector((state) => state.user);
 
-
   useEffect(() => {
     if(successsignin==false && successsignup === true && errorsignup !== "") {
       toast.success(errorsignup);
