@@ -55,7 +55,7 @@ const Dashboard = () => {
   const userDetails = useSelector((state) => state.post.userDetails);
   const savedmsg = useSelector((state) => state.post.savedmsg);
   const savedsuccess = useSelector((state) => state.post.savedsuccess);
-  console.log(savedsuccess, savedmsg);
+
   const { commentmsg, commentsuceess, likesuccess, likemsg } = useSelector(
     (state) => state.post
   );
@@ -94,6 +94,9 @@ const Dashboard = () => {
     setCommentOpenSection((prevId) => (prevId === postId ? null : postId));
   };
 
+   const openSaved=()=>{
+    navigate("/setting");
+   }
   const addComment = (sectionId) => {
     setCommentModal((prevSections) => ({
       ...prevSections,
@@ -177,7 +180,7 @@ const Dashboard = () => {
     setSearchText(event.target.value);
   };
 
-  console.log(allPost);
+
   return (
     <div className="dashboard_wrapper">
       <div className="dashboard_wrapper_00">
@@ -223,7 +226,7 @@ const Dashboard = () => {
               <span onClick={openUpload}>
                 <FaSquarePlus /> Create{" "}
               </span>
-              <span>
+              <span onClick={openSaved}>
                 <BsBookmarkFill /> Saved
               </span>
             </section>

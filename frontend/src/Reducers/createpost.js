@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-//  const API="https://ins01.onrender.com/";
-const API = "http://localhost:4000/";
+ const API="https://ins01.onrender.com/";
+// const API = "http://localhost:4000/";
 const initialState = {
   posts: [],
-  postsone:[],
+  postsone: [],
   loading: false,
   error: "",
   createmg: "",
@@ -15,9 +15,11 @@ const initialState = {
   commentsuceess: false,
   likemsg: "",
   likesuccess: false,
-  savedsuccess:false,
-  savedmsg:"",
-  userDetails:""
+  savedsuccess: false,
+  savedmsg: "",
+  userDetails: "",
+  mysavedpost: [],
+  mysavedpostmsg: "",
 };
 
 export const createPost = createAsyncThunk(
@@ -38,7 +40,6 @@ export const createPost = createAsyncThunk(
       });
 
       const data = await result.json();
-    
 
       return data;
     } catch (error) {
@@ -78,7 +79,7 @@ export const getOnePost = createAsyncThunk("getOnepost", async () => {
     });
 
     const data = await result.json();
-    
+
     return data;
   } catch (error) {
     return { error: error.message };
@@ -89,6 +90,7 @@ export const addComments = createAsyncThunk(
   "addcomments",
   async ({ postId, commentText }) => {
     try {
+      console.log(postId, commentText);
       const token = localStorage.getItem("token");
 
       const result = await fetch(`${API}post/addComment`, {
@@ -142,6 +144,48 @@ export const savedpost = createAsyncThunk("savedpost", async (postId) => {
 
     const data = await result.json();
 
+    return data;
+  } catch (error) {
+    return { error: error.message };
+  }
+});
+
+export const mysavedpostall = createAsyncThunk(
+  "mysavedpostall",
+  async (postId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const result = await fetch(`${API}post/mysavepost`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ postId }),
+      });
+
+      const data = await result.json();
+
+      return data;
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+);
+
+export const deletePost = createAsyncThunk("deletePost", async (postId) => {
+  try {
+    const token = localStorage.getItem("token");
+    const result = await fetch(`${API}post/deletepost`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ postId }),
+    });
+
+    const data = await result.json();
 
     return data;
   } catch (error) {
@@ -149,6 +193,29 @@ export const savedpost = createAsyncThunk("savedpost", async (postId) => {
   }
 });
 
+export const editPost = createAsyncThunk(
+  "editPost",
+  async ({ postId, finalupdate }) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const result = await fetch(`${API}post/editpost`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ postId, finalupdate }),
+      });
+
+      const data = await result.json();
+
+      return data;
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+);
 
 const postReducer = createSlice({
   name: "post",
@@ -176,7 +243,7 @@ const postReducer = createSlice({
         state.error = action.payload.error;
       } else {
         state.posts = action.payload.allpost;
-        state.userDetails=action.payload.userDetails;
+        state.userDetails = action.payload.userDetails;
       }
     },
     [getAllPost.pending]: (state) => {
@@ -231,9 +298,8 @@ const postReducer = createSlice({
         state.error = action.payload.error;
       } else {
         state.likemsg = action.payload.message;
-        if(state.likemsg==="Post Unliked")
-        {
-          state.likesuccess=false;
+        if (state.likemsg === "Post Unliked") {
+          state.likesuccess = false;
         }
       }
     },
@@ -252,9 +318,8 @@ const postReducer = createSlice({
         state.error = action.payload.error;
       } else {
         state.savedmsg = action.payload.message;
-        if(state.savedmsg==="Post Removed from save")
-        {
-          state.savedsuccess=false;
+        if (state.savedmsg === "Post Removed from save") {
+          state.savedsuccess = false;
         }
       }
     },
@@ -264,6 +329,24 @@ const postReducer = createSlice({
     [savedpost.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload.message;
+    },
+
+    [mysavedpostall.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.success = action.payload.success;
+
+      if (action.payload.error) {
+        state.mysavedpostmsg = action.payload.error;
+      } else {
+        state.mysavedpost = action.payload.allpost;
+      }
+    },
+    [mysavedpostall.pending]: (state) => {
+      state.loading = true;
+    },
+    [mysavedpostall.rejected]: (state, action) => {
+      state.loading = false;
+      state.mysavedpostmsg = action.payload.error;
     },
   },
 });
