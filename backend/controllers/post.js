@@ -66,7 +66,6 @@ exports.allPost = async (req, res) => {
       .populate("likes.userId", "username")
       .sort({ createdAt: -1 });
     const userDetails = req.userId;
-    
 
     res.status(200).json({
       success: true,
@@ -85,7 +84,7 @@ exports.allPost = async (req, res) => {
 
 exports.myPost = async (req, res) => {
   try {
-    const allpost = await Post.find(req.userId)
+    const allpost = await Post.find({ postedBy: req.userId })
       .populate("postedBy", "username createdAt")
       .populate("comments.userId", "username")
       .populate("likes.userId", "username")
@@ -98,6 +97,27 @@ exports.myPost = async (req, res) => {
     res.status(500).json({
       success: false,
       error: "An error occurred while fetching posts",
+    });
+  }
+};
+
+exports.mysavepost = async (req, res) => {
+  try {
+    const allpost = await Post.find({ SavedBy: req.userId })
+      .populate("comments.userId", "username")
+      .populate("likes.userId", "username")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      allpost,
+      message: "Saved Posts fetched successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error: "An error occurred while fetching Saved posts",
     });
   }
 };
@@ -251,6 +271,55 @@ exports.comment = async (req, res) => {
     res.status(500).json({
       success: false,
       error: "An error occurred while adding the comment",
+    });
+  }
+};
+
+exports.deletePost = async (req, res) => {
+  try {
+    const { postId } = req.body;
+
+    const post = await Post.findByIdAndDelete(postId);
+
+    if (!post) {
+      res.status(200).json({ success: true, message: "Post Not found" });
+    }
+    res
+      .status(200)
+      .json({ success: true, message: "Post Deleted successfully" });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Post Not Deleted successfully",
+    });
+  }
+};
+
+exports.editPost = async (req, res) => {
+  try {
+    const { postId, finalupdate } = req.body;
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { caption: finalupdate },
+      { new: true }
+    );
+
+    if (!updatedPost) {
+      res.status(500).json({ success: true, message: "Post Not found" });
+    }
+
+    res
+      .status(200)
+      .json({
+        success: true,
+        updatedPost,
+        message: "Post Updated successfully",
+      });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Post Not Updated successfully",
     });
   }
 };

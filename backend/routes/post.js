@@ -12,10 +12,13 @@ app.post(
 );
 // app.post("/createstory", authMiddleware,homeController.createStory);
 app.get("/allpost", authMiddleware, homeController.allPost);
-app.get("/mypost", authMiddleware, homeController.allPost);
+app.get("/mypost", authMiddleware, homeController.myPost);
 app.post('/addcomment',authMiddleware,homeController.comments);
 app.get("/userpost", authMiddleware, homeController.userPost);
 app.post("/postlike", authMiddleware, homeController.handlelike);
 app.post("/savepost",authMiddleware,homeController.savepost);
+app.post("/mysavepost",authMiddleware,homeController.mysavepost);
+app.post("/deletePost",authMiddleware,homeController.deletePost);
+app.post("/editPost",authMiddleware,homeController.editPost);
 
 module.exports = app;
