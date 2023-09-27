@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   AiOutlineBulb,
   AiOutlineEye,
@@ -17,6 +17,7 @@ const Test = () => {
   const [auth, isAuth] = useState(true);
   const [showPassword, setShowPassword] = useState(true);
   const [passowrdhintshow, setPasswordHintShow] = useState(false);
+  const [signined, setIsSignined] = useState(true);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -43,18 +44,24 @@ const Test = () => {
     useSelector((state) => state.user);
 
   useEffect(() => {
-    if(successsignin==false && successsignup === true && errorsignup !== "") {
+    if (successsignup == false && errorsignup !== "") {
+      toast.error(errorsignup);
+    }
+    if (successsignup == true && errorsignup !== "") {
       toast.success(errorsignup);
     }
-  }, [successsignup, errorsignup]);
+  }, [errorsignup, successsignup]);
 
   useEffect(() => {
+    console.log(signined);
     if (successsignin == false && errorsignin !== "") {
+      toast.error(errorsignin);
+    } else if (signined && successsignin == true && errorsignin !== "") {
+      toast.success("Logout Successfully");
+    } else if (successsignin == true && errorsignin !== "") {
       toast.success(errorsignin);
-    } else if (successsignin === true) {
-      toast.success("Logout successfully");
     }
-  }, [errorsignin,successsignin]);
+  }, [errorsignin, successsignin, signined]);
 
   const handleSubmit2 = async (e) => {
     e.preventDefault();
