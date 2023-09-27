@@ -65,7 +65,7 @@ exports.allPost = async (req, res) => {
       .populate("comments.userId", "username")
       .populate("likes.userId", "username")
       .sort({ createdAt: -1 });
-    const userDetails = req.userId;
+    const userDetails = await User.findById(req.userId);
 
     res.status(200).json({
       success: true,
@@ -97,6 +97,29 @@ exports.myPost = async (req, res) => {
     res.status(500).json({
       success: false,
       error: "An error occurred while fetching posts",
+    });
+  }
+};
+
+exports.searchPost = async (req, res) => {
+  try {
+    const { user } = req.body;
+    const UserId = await User.find({ username: user }).select("_id");
+
+    const allpost = await Post.find({ postedBy: UserId }).populate("postedBy", "username createdAt");
+
+    res
+      .status(200)
+      .json({
+        success: true,
+        allpost,
+        message: " Search Posts fetched successfully",
+      });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      error: "An error occurred while fetching Search posts",
     });
   }
 };
@@ -309,13 +332,11 @@ exports.editPost = async (req, res) => {
       res.status(500).json({ success: true, message: "Post Not found" });
     }
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        updatedPost,
-        message: "Post Updated successfully",
-      });
+    res.status(200).json({
+      success: true,
+      updatedPost,
+      message: "Post Updated successfully",
+    });
   } catch (error) {
     res.status(500).json({
       success: false,

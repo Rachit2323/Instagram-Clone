@@ -13,6 +13,7 @@ app.post(
 // app.post("/createstory", authMiddleware,homeController.createStory);
 app.get("/allpost", authMiddleware, homeController.allPost);
 app.get("/mypost", authMiddleware, homeController.myPost);
+app.post("/searchpost", authMiddleware, homeController.searchPost);
 app.post('/addcomment',authMiddleware,homeController.comments);
 app.get("/userpost", authMiddleware, homeController.userPost);
 app.post("/postlike", authMiddleware, homeController.handlelike);
