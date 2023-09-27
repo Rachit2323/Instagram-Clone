@@ -39,6 +39,8 @@ const Setting = () => {
   const DeletePost = (postID) => {
     dispatch(deletePost(postID));
   };
+  const userDetails = useSelector((state) => state.post.userDetails);
+
 
   const posts = useSelector((state) => state.post.postsone);
   const mysavedposts = useSelector((state) => state.post.mysavedpost);
@@ -68,7 +70,7 @@ const Setting = () => {
         <div className="setting_navbar_00">
           <img src={mine} />
           <section>
-            <span>Rachit Sharma</span>
+            <span>{userDetails.username}</span>
 
             <section>
               <span>{allPost.length} post</span>

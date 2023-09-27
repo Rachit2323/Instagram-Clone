@@ -5,6 +5,9 @@ import { useSelector } from "react-redux";
 const initialState = {
   posts: [],
   postsone: [],
+  searchpost:[],
+  searchpostmsg:"",
+  searchpostloading:false,
   loading: false,
   error: "",
   createmg: "",
@@ -67,6 +70,28 @@ export const getAllPost = createAsyncThunk("getAllpost", async () => {
   }
 });
 
+export const getSearchPost = createAsyncThunk("getSearchPost", async (user) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const result = await fetch(`${API}post/searchpost`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user }),
+    });
+
+    const data = await result.json();
+
+
+    return data;
+  } catch (error) {
+    return { error: error.message };
+  }
+});
+
 export const getOnePost = createAsyncThunk("getOnepost", async () => {
   try {
     const token = localStorage.getItem("token");
@@ -75,6 +100,7 @@ export const getOnePost = createAsyncThunk("getOnepost", async () => {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
+        
       },
     });
 
@@ -348,6 +374,27 @@ const postReducer = createSlice({
       state.loading = false;
       state.mysavedpostmsg = action.payload.error;
     },
+    [getSearchPost.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.success = action.payload.success;
+
+      if (action.payload.error) {
+        state.searchpostmsg = action.payload.error;
+      } else {
+        state.searchpost = action.payload.allpost;
+        state.searchpostmsg=action.payload.message;
+        state.searchpostloading=action.payload.success;
+      }
+    },
+    [getSearchPost.pending]: (state) => {
+      state.loading = true;
+    },
+    [getSearchPost.rejected]: (state, action) => {
+      state.loading = false;
+      state.searchpostmsg = action.payload.error;
+    },
+
+    
   },
 });
 

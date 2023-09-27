@@ -55,7 +55,15 @@ const Dashboard = () => {
     image: null,
   });
   const posts = useSelector((state) => state.post.posts);
+
+  const searchpost = useSelector((state) => state.post.searchpost);
+  const searchpostmsg = useSelector((state) => state.post.searchpostmsg);
+  const searchpostloading = useSelector(
+    (state) => state.post.searchpostloading
+  );
+
   const userDetails = useSelector((state) => state.post.userDetails);
+
   const savedmsg = useSelector((state) => state.post.savedmsg);
   const savedsuccess = useSelector((state) => state.post.savedsuccess);
 
@@ -70,13 +78,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      setAllPost(posts);
+      if (searchpostloading) setAllPost(searchpost);
+      else setAllPost(posts);
 
       if (showpostupdate) {
         window.location.reload();
       }
     }, 2000);
-  }, [posts, showpostupdate]);
+  }, [posts, showpostupdate, searchpost, searchpostloading]);
 
   const dispatch = useDispatch();
   const handleImageUpload = (event) => {
@@ -178,7 +187,6 @@ const Dashboard = () => {
   const closeUpload = () => {
     setIsOpen(false);
   };
-        
 
   const handleLike = (postId) => {
     // Dispatch the action to like the post
@@ -253,7 +261,9 @@ const Dashboard = () => {
                   <section>
                     <span>
                       <img
-                        src={post.likes.includes(userDetails) ? redHeart : Like}
+                        src={
+                          post.likes.includes(userDetails._id) ? redHeart : Like
+                        }
                         alt="Like"
                         onClick={() => handleLike({ postId: post._id })}
                       />
@@ -266,7 +276,7 @@ const Dashboard = () => {
 
                       <img src={Share} alt="Share" />
                     </span>
-                    {post.SavedBy.includes(userDetails) && (
+                    {post.SavedBy.includes(userDetails._id) && (
                       <BsBookmarkFill
                         style={{
                           color: "white",
@@ -276,7 +286,7 @@ const Dashboard = () => {
                         onClick={() => savePost(post._id)}
                       />
                     )}
-                    {!post.SavedBy.includes(userDetails) && (
+                    {!post.SavedBy.includes(userDetails._id) && (
                       <BsBookmark
                         style={{
                           color: "white",
@@ -364,7 +374,7 @@ const Dashboard = () => {
                 <div className="post_wrapper_011">
                   <img src={mine} />
                   <section>
-                    <span>{allPost[0]?.postedBy?.username}</span>
+                    <span>{userDetails.username}</span>
                     <span style={{ fontWeight: "400" }}>Delhi , India</span>
                   </section>
                 </div>

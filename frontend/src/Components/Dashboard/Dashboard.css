@@ -24,17 +24,17 @@
   justify-content: space-between;
 }
 
-.dashboard_navbar_00 >section> span{
-color: #FFF;
-width: 15%;
-font-family: "Roboto";
-display: flex;
-align-items: center;
-font-size: 19px;
-gap: 5px;
-font-style: normal;
-font-weight: 500;
-line-height: 20px; /* 142.857% */
+.dashboard_navbar_00 > section > span {
+  color: #fff;
+  width: 15%;
+  font-family: "Roboto";
+  display: flex;
+  align-items: center;
+  font-size: 19px;
+  gap: 5px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 142.857% */
 }
 
 .dashboard_navbar_00 > section > div {
@@ -42,8 +42,24 @@ line-height: 20px; /* 142.857% */
   display: flex;
   align-items: center;
   position: relative;
+  gap: 15px;
 }
 
+.search_navbar_button {
+  color: white;
+  padding: 6px;
+  cursor: pointer;
+  font-family: "Roboto";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  border-radius: 10px;
+  border: 1px solid #d4cfcf;
+}
+
+.search_navbar_button:hover{
+  background: red;
+}
 .dashboard_navbar_00 > section > div > input {
   display: flex;
   width: 208px;
@@ -377,8 +393,6 @@ line-height: 20px; /* 142.857% */
   gap: 15px;
   margin-top: 30px;
 }
-
-
 
 .comment_modal_wrapper > span {
   background: #dbdbdb;
