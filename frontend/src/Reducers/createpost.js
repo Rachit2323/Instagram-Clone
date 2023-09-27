@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
- const API="https://ins01.onrender.com/";
-// const API = "http://localhost:4000/";
+//  const API="https://ins01.onrender.com/";
+const API = "http://localhost:4000/";
 const initialState = {
   posts: [],
   postsone: [],

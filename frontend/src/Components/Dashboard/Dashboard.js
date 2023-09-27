@@ -38,8 +38,11 @@ const Dashboard = () => {
   const [commentText, setCommentText] = useState("");
   const [allPost, setAllPost] = useState([]);
   const [commentopensection, setCommentOpenSection] = useState(false);
+  const [loadingstate, setLoadingState] = useState(false);
+  const [showpostupdate, setShowPostUpdate] = useState(false);
 
   const handleCommentChange = (event) => {
+    setLoadingState((prev) => !prev);
     setCommentText(event.target.value);
   };
 
@@ -66,9 +69,14 @@ const Dashboard = () => {
   }, [commentsuceess]);
 
   useEffect(() => {
-    setAllPost(posts);
-    // setUserDetails()
-  }, [posts]);
+    setTimeout(() => {
+      setAllPost(posts);
+
+      if (showpostupdate) {
+        window.location.reload();
+      }
+    }, 2000);
+  }, [posts, showpostupdate]);
 
   const dispatch = useDispatch();
   const handleImageUpload = (event) => {
@@ -94,9 +102,9 @@ const Dashboard = () => {
     setCommentOpenSection((prevId) => (prevId === postId ? null : postId));
   };
 
-   const openSaved=()=>{
+  const openSaved = () => {
     navigate("/setting");
-   }
+  };
   const addComment = (sectionId) => {
     setCommentModal((prevSections) => ({
       ...prevSections,
@@ -104,13 +112,19 @@ const Dashboard = () => {
     }));
   };
 
+  const UpdateComment = () => {
+    console.log("update");
+  };
+
   const savePost = (postId) => {
+    setLoadingState((prev) => !prev);
     dispatch(savedpost(postId));
   };
   const postComment = ({ postId, commentText }) => {
     if (commentText.trim() === "") {
       return;
     }
+
     dispatch(addComments({ postId, commentText }));
   };
   const ImageSave = () => {
@@ -121,7 +135,9 @@ const Dashboard = () => {
     if (postData.image === null) {
       return;
     }
+
     dispatch(createPost(postData));
+    setShowPostUpdate(true);
   };
   const { error, success, createmg, createsuccess } = useSelector(
     (state) => state.post
@@ -142,7 +158,14 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getAllPost());
-  }, []);
+
+    // Delay the reload by 1 seconds
+    if (showpostupdate) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    }
+  }, [loadingstate, showpostupdate]);
 
   const ImageBack = () => {
     setImageSave(false);
@@ -155,21 +178,17 @@ const Dashboard = () => {
   const closeUpload = () => {
     setIsOpen(false);
   };
-
-  // const handleLike = (Id) => {
-
-  //   setLiked(!liked);
-  // };
+        
 
   const handleLike = (postId) => {
     // Dispatch the action to like the post
+    setLoadingState((prev) => !prev);
     dispatch(addLikes(postId.postId));
   };
 
   const navigate = useNavigate();
 
   const handleCaptionChange = (event) => {
-    // Update the postData with the caption
     setPostData({
       ...postData,
       caption: event.target.value,
@@ -180,40 +199,9 @@ const Dashboard = () => {
     setSearchText(event.target.value);
   };
 
-
   return (
     <div className="dashboard_wrapper">
       <div className="dashboard_wrapper_00">
-        {/* <div className="dashboard_navbar_00">
-          <section>
-            <img src={logo} alt="Logo" />
-            <div className="search-input">
-              <input
-                type="text"
-                placeholder="Search"
-                value={searchText}
-                onChange={handleInputChange}
-                style={{ textAlign: "center", border: "none", outline: "none" }}
-              />
-              {searchText === "" ? (
-                <img src={search} alt="Search" className="search-icon" />
-              ) : null}
-            </div>
-            <span>
-              {" "}
-              Logout
-              <IoIosLogOut
-                style={{
-                  color: "white",
-                  fontSize: "32px",
-                  cursor: "pointer",
-                  width: "30%",
-                }}
-                onClick={handleLogout}
-              />
-            </span>
-          </section>
-        </div> */}
         <Navbar />
         <span className="dashboard_outline"></span>
         <div className="dashboard_all_main">
