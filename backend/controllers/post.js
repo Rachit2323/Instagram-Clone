@@ -61,7 +61,7 @@ exports.createPost = async (req, res) => {
 exports.allPost = async (req, res) => {
   try {
     const allpost = await Post.find()
-      .populate("postedBy", "username createdAt")
+      .populate("postedBy", "username createdAt profileimg")
       .populate("comments.userId", "username")
       .populate("likes.userId", "username")
       .sort({ createdAt: -1 });
@@ -108,7 +108,7 @@ exports.searchPost = async (req, res) => {
 
     const allpost = await Post.find({ postedBy: UserId }).populate(
       "postedBy",
-      "username createdAt"
+      "username createdAt profileimg"
     );
 
     res.status(200).json({
