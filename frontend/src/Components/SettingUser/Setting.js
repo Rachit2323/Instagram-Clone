@@ -8,11 +8,14 @@ import save from "./Icons/Saved.svg";
 import { useDispatch, useSelector } from "react-redux";
 import savefill from "./Icons/savedfilled.svg";
 import postfill from "./Icons/postfilled.svg";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 import {
   getOnePost,
   mysavedpostall,
   deletePost,
   editPost,
+  getAllPost,
+  Profileupdate
 } from "../../Reducers/createpost.js";
 
 const Setting = () => {
@@ -22,9 +25,10 @@ const Setting = () => {
   const [editpostactivate, setEditPostActivate] = useState(false);
   const [editedCaption, setEditedCaption] = useState("");
   const [selectedPostId, setSelectedPostId] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+
 
   const dispatch = useDispatch();
-
   const EditPost = (postId) => {
     setSelectedPostId(postId);
     setEditPostActivate((prev) => !prev);
@@ -39,11 +43,42 @@ const Setting = () => {
   const DeletePost = (postID) => {
     dispatch(deletePost(postID));
   };
-  const userDetails = useSelector((state) => state.post.userDetails);
+  useEffect(() => {
+    dispatch(getAllPost());
+  }, []);
 
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0]; // Get the selected file
+    if (file) {
+      const reader = new FileReader();
+  
+      reader.onload = (e) => {
+        // Set the previewImage to the data URL of the selected image
+        setPreviewImage(e.target.result);
+  
+        // Update the postData after the image has been read
+        const updatedPostData = {
+          image: file,
+        };
+  
+
+        dispatch(Profileupdate(updatedPostData)); 
+      };
+  
+      reader.readAsDataURL(file); 
+    }
+  };
+  
+  const userProfile = useSelector((state) => state.post.profileimg);
+
+
+  const userDetails = useSelector((state) => state.post.userDetails);
+  
 
   const posts = useSelector((state) => state.post.postsone);
   const mysavedposts = useSelector((state) => state.post.mysavedpost);
+  const username = userDetails.username;
+
 
   useEffect(() => {
     setMySavedPost(mysavedposts);
@@ -68,9 +103,21 @@ const Setting = () => {
       <Navbar />
       <div className="setting_wrapper">
         <div className="setting_navbar_00">
-          <img src={mine} />
+          <div className="image_upload_user">
+          <label htmlFor="fileInput">
+            <img src={userProfile} />
+            <input
+                  id="fileInput"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  style={{ display: "none" }}
+                />
+            <AiOutlineCloudUpload />
+            </label>
+          </div>
           <section>
-            <span>{userDetails.username}</span>
+            <span>{username}</span>
 
             <section>
               <span>{allPost.length} post</span>

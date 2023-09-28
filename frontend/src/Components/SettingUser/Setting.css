@@ -16,12 +16,25 @@
   justify-content: center;
 }
 
-.setting_navbar_00 > img {
+.image_upload_user {
+  position: relative;
+}
+.image_upload_user > label>img {
   width: 152px;
   height: 152px;
   border-radius: 100px;
+
 }
 
+.image_upload_user >label>svg{
+  color: white;
+  cursor: pointer;
+  position: absolute;
+  top: 85%;
+  left: 91%;
+  width: 25px;
+  height: 25px;
+}
 .setting_navbar_00 > section {
   display: flex;
   flex-direction: column;

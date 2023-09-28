@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-const API="https://ins01.onrender.com/";
+// const API="https://ins01.onrender.com/";
 // frontend  charming-belekoy-1d7e17
-// const API = "http://localhost:4000/";
+const API = "http://localhost:4000/";
 const initialState = {
   token: "",
   loading: false,
@@ -61,7 +61,7 @@ const authReducer = createSlice({
         state.errorsignup = action.payload.error;
         state.successsignup = action.payload.success;
       } else {
-        console.log(action.payload);
+
         state.errorsignup = action.payload.message;
         state.successsignup = action.payload.success;
       }

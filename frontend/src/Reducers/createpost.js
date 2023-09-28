@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
- const API="https://ins01.onrender.com/";
-// const API = "http://localhost:4000/";
+//  const API="https://ins01.onrender.com/";
+const API = "http://localhost:4000/";
 const initialState = {
   posts: [],
   postsone: [],
@@ -23,7 +23,10 @@ const initialState = {
   userDetails: "",
   mysavedpost: [],
   mysavedpostmsg: "",
+  profileimg:"",
+  profileimgmsg:""
 };
+
 
 export const createPost = createAsyncThunk(
   "createpost",
@@ -116,7 +119,7 @@ export const addComments = createAsyncThunk(
   "addcomments",
   async ({ postId, commentText }) => {
     try {
-      console.log(postId, commentText);
+
       const token = localStorage.getItem("token");
 
       const result = await fetch(`${API}post/addComment`, {
@@ -242,6 +245,33 @@ export const editPost = createAsyncThunk(
     }
   }
 );
+
+export const Profileupdate = createAsyncThunk(
+  "Profileupdate",
+  async (updatedPostData) => { 
+
+    try {
+      console.log(updatedPostData); // Logging the updatedPostData
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
+      formData.append("file", updatedPostData.image); // Access the image property from updatedPostData
+      const result = await fetch(`${API}post/profileimg`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      const data = await result.json();
+
+      return data;
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+);
+
 
 const postReducer = createSlice({
   name: "post",
@@ -393,6 +423,24 @@ const postReducer = createSlice({
       state.loading = false;
       state.searchpostmsg = action.payload.error;
     },
+
+    [Profileupdate.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.success = action.payload.success;
+
+
+      if (action.payload.error) {
+        state.profileimgmsg = action.payload.error;
+      } else {
+        state.profileimg = action.payload.userDetails.profileimg.url;
+        state.profileimgmsg=action.payload.message;
+
+      }
+    },
+    [Profileupdate.pending]: (state) => {
+      state.loading = true;
+    },
+  
 
     
   },

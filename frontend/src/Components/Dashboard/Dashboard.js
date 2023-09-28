@@ -121,9 +121,6 @@ const Dashboard = () => {
     }));
   };
 
-  const UpdateComment = () => {
-    console.log("update");
-  };
 
   const savePost = (postId) => {
     setLoadingState((prev) => !prev);

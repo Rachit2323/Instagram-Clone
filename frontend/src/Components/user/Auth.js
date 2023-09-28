@@ -53,7 +53,7 @@ const Test = () => {
   }, [errorsignup, successsignup]);
 
   useEffect(() => {
-    console.log(signined);
+
     if (successsignin == false && errorsignin !== "") {
       toast.error(errorsignin);
     } else if (signined && successsignin == true && errorsignin !== "") {
