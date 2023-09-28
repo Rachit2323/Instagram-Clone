@@ -347,7 +347,6 @@ exports.editPost = async (req, res) => {
 };
 
 exports.profile = async (req, res) => {
-
   try {
     const file = req.file;
 
@@ -379,6 +378,32 @@ exports.profile = async (req, res) => {
     res.status(500).json({
       success: false,
       error: "Profile image not updated successfully",
+    });
+  }
+};
+
+exports.UserAllDetails = async (req, res) => {
+  try {
+    const { usernameprofile } = req.query;
+
+    const searachuser = await User.find({ username: usernameprofile }).select(
+      "_id profileimg"
+    );
+
+    const allpost = await Post.find({ postedBy: searachuser[0]._id });
+    const savedpost = await Post.find({ SavedBy: searachuser[0]._id });
+    // console.log(allpost, savedpost, searachuser);
+    res.status(200).json({
+      success: true,
+      allpost,
+      savedpost,
+      searachuser,
+      message: "Search User retrieved successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Failed to retrieve Searched details",
     });
   }
 };
