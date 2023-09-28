@@ -21,5 +21,8 @@ app.post("/savepost",authMiddleware,homeController.savepost);
 app.post("/mysavepost",authMiddleware,homeController.mysavepost);
 app.post("/deletePost",authMiddleware,homeController.deletePost);
 app.post("/editPost",authMiddleware,homeController.editPost);
+app.post("/profileimg",authMiddleware,singleUpload,homeController.profile);
+
+
 
 module.exports = app;

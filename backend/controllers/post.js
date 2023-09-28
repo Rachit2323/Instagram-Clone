@@ -106,15 +106,16 @@ exports.searchPost = async (req, res) => {
     const { user } = req.body;
     const UserId = await User.find({ username: user }).select("_id");
 
-    const allpost = await Post.find({ postedBy: UserId }).populate("postedBy", "username createdAt");
+    const allpost = await Post.find({ postedBy: UserId }).populate(
+      "postedBy",
+      "username createdAt"
+    );
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        allpost,
-        message: " Search Posts fetched successfully",
-      });
+    res.status(200).json({
+      success: true,
+      allpost,
+      message: " Search Posts fetched successfully",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -341,6 +342,43 @@ exports.editPost = async (req, res) => {
     res.status(500).json({
       success: false,
       error: "Post Not Updated successfully",
+    });
+  }
+};
+
+exports.profile = async (req, res) => {
+
+  try {
+    const file = req.file;
+
+    const fileUri = getDataUri(file);
+    const mycloud = await cloudinary.v2.uploader.upload(fileUri.content);
+
+    const userDetails = await User.findById(req.userId);
+
+    if (!userDetails) {
+      return res.status(404).json({
+        success: false,
+        error: "User not found",
+      });
+    }
+
+    userDetails.profileimg = {
+      public_id: mycloud.public_id,
+      url: mycloud.secure_url,
+    };
+
+    await userDetails.save();
+
+    res.status(200).json({
+      success: true,
+      userDetails,
+      message: "Profile image updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: "Profile image not updated successfully",
     });
   }
 };

@@ -6,6 +6,15 @@ const userSchema = new mongoose.Schema({
     // required: true,
     unique: true,
   },
+  profileimg: {
+    public_id: {
+      type: String,
+    },
+    url: {
+      type: String,
+      default: 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png',
+    },
+  },
   email: {
     type: String,
     required: true,
@@ -22,12 +31,15 @@ const userSchema = new mongoose.Schema({
   googleId:{
     type:String
   },
-  // savepost: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: 'Post',
-  //   },
-  // ],
+  followers: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', 
+  }],
+  following: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  }],
+
   status:{
     type:Number,
     default:1,  // 0-> inactive 1 ->active
