@@ -10,6 +10,7 @@ import Share from "./Icons/Share.svg";
 import { BsBookmarkFill, BsBookmark } from "react-icons/bs";
 import moment from "moment";
 import emoji from "./Icons/emoji.svg";
+
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FaSquarePlus } from "react-icons/fa6";
@@ -213,7 +214,9 @@ const Dashboard = () => {
   const handleInputChange = (event) => {
     setSearchText(event.target.value);
   };
-
+const handleprofile=(username)=>{
+ navigate(`/${username}`)
+}
   return (
     <div className="dashboard_wrapper">
       <div className="dashboard_wrapper_00">
@@ -237,7 +240,7 @@ const Dashboard = () => {
 
           <div className="dashboard_story_wrapper_mid">
             <div className="dashboard_story_wrapper">
-              <section>
+            <section >
                 <img src={userDetails?.profileimg?.url} />
                 <span>{userDetails?.username}</span>
               </section>
@@ -250,6 +253,7 @@ const Dashboard = () => {
                     <img
                       src={post.postedBy.profileimg?.url}
                       alt="User Profile"
+                      onClick={() => handleprofile(post.postedBy.username)}
                     />
                     <section>
                       <span>{post.postedBy.username}</span>

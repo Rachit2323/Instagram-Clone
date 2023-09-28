@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-//  const API="https://ins01.onrender.com/";
-const API = "http://localhost:4000/";
+ const API="https://ins01.onrender.com/";
+// const API = "http://localhost:4000/";
 const initialState = {
   posts: [],
   postsone: [],
@@ -25,7 +25,11 @@ const initialState = {
   mysavedpost: [],
   mysavedpostmsg: "",
   profileimg:"",
-  profileimgmsg:""
+  profileimgmsg:"",
+  seachuserpost:[],
+  seachusersavedpost:[],
+  searchusermsg:"",
+  searchuserdetails:""
 };
 
 
@@ -274,6 +278,36 @@ export const Profileupdate = createAsyncThunk(
   }
 );
 
+export const getUserAllDetails = createAsyncThunk(
+  "getUserAllDetails",
+  async (usernameprofile) => { 
+    try {
+
+      const token = localStorage.getItem("token");
+      
+      // Construct the URL with a query parameter for usernameprofile
+      const url = `${API}post/getAllDetails?usernameprofile=${usernameprofile}`;
+      
+      const result = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        
+      });
+
+      const data = await result.json();
+      
+      return data;
+    } catch (error) {
+      return { error: error.message };
+    }
+  }
+);
+
+
+
 
 const postReducer = createSlice({
   name: "post",
@@ -446,9 +480,29 @@ const postReducer = createSlice({
       state.loading = true;
     },
   
+      [getUserAllDetails.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.success = action.payload.success;
+
+
+      if (action.payload.error) {
+        state.searchusermsg = action.payload.error;
+      } else {
+        state.seachuserpost = action.payload.allpost;
+        state.searchuserdetails = action.payload.searachuser;
+        state.seachusersavedpost = action.payload.savedpost;
+        state.searchusermsg=action.payload.message;
+
+      }
+    },
+    [getUserAllDetails.pending]: (state) => {
+      state.loading = true;
+    },
 
     
   },
 });
 
 export default postReducer.reducer;
+  // :[],
+  // :[]
