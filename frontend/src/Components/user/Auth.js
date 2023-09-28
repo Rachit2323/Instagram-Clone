@@ -45,7 +45,7 @@ const Test = () => {
     useSelector((state) => state.user);
 
   const dashboard = useSelector((state) => state.post.dashboard);
-  console.log(dashboard);
+
 
 
 
@@ -60,7 +60,7 @@ const Test = () => {
   }, [errorsignup, successsignup]);
 
   useEffect(() => {
-    console.log(errorsignin, successsignin, signined,dashboard);
+
 
     if (!dashboard && successsignin == false && errorsignin !== "") {
       toast.error(errorsignin);

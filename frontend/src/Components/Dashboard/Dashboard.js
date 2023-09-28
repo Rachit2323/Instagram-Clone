@@ -169,12 +169,12 @@ const Dashboard = () => {
   }, [loadingstate, showpostupdate]);
 
   const dashboard = useSelector((state) => state.post.dashboard);
-  console.log(dashboard);
+
 
   useEffect(() => {
-    console.log(dashboard);
+
     if (!dashboard) {
-      console.log(dashboard);
+
       if (successsignin === false && errorsignin !== "") {
         toast.error(errorsignin);
       } else if (successsignin === true) {
