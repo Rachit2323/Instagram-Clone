@@ -115,8 +115,9 @@ const Dashboard = () => {
     navigate("/setting");
   };
   const addComment = (sectionId) => {
+
     setCommentModal((prevSections) => ({
-      ...prevSections,
+      // ...prevSections,
       [sectionId]: !prevSections[sectionId],
     }));
   };
@@ -298,11 +299,10 @@ const Dashboard = () => {
                   <span>{post.likes.length} Likes</span>
 
                   <p>
-                    <strong style={{ fontWeight: "500" }}>
+                    <strong style={{ fontWeight: "bold" }}>
                       {
-                        // post.postedBy.username
-                        //  +
-                        " Caption -> "
+                     
+                        post?.postedBy?.username +  " "
                       }
                     </strong>
                     {post.caption}
@@ -319,17 +319,19 @@ const Dashboard = () => {
                             color: "#d2cbcb",
                             marginLeft: "10px",
                             fontSize: "14px",
+                            borderTop: "1px solid lightgray",
+                            borderLeft: "1px solid lightgray"
                           }}
                         >
                           {`By ${item.userId.username} : `}
                           <span style={{ color: "gray" }}>{item.text}</span>
                         </h5>
+
                       </div>
                     ))}
 
                   {commentModal[post._id] && !commentsuceess && (
                     <div className="comment_modal_wrapper">
-                      <span></span>
                       <section>
                         <img src={emoji} />
                         <textarea
@@ -343,7 +345,7 @@ const Dashboard = () => {
                             color: "white",
                           }}
                           placeholder="Your text here..."
-                          value={commentText}
+                          value={commentText[post._id]}  // by this only for particular commenttext is written on selected post
                           onChange={handleCommentChange}
                         />
 

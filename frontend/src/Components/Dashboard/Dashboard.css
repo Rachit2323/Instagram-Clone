@@ -235,7 +235,10 @@
   font-weight: 400;
 }
 
+
+
 .post_wrapper_03 > h5 {
+
   cursor: pointer;
   padding-left: 10px;
   color: #989898;
@@ -392,6 +395,9 @@
   flex-direction: column;
   gap: 15px;
   margin-top: 30px;
+}
+.comment_modal_wrapper{
+  border: 1px solid whitesmoke;
 }
 
 .comment_modal_wrapper > span {
