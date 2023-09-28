@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
- const API="https://ins01.onrender.com/";
-// const API = "http://localhost:4000/";
+//  const API="https://ins01.onrender.com/";
+const API = "http://localhost:4000/";
 const initialState = {
   posts: [],
   postsone: [],
   searchpost:[],
   searchpostmsg:"",
   searchpostloading:false,
+  dashboard:false,
   loading: false,
   error: "",
   createmg: "",
@@ -294,21 +295,24 @@ const postReducer = createSlice({
     },
     [getAllPost.fulfilled]: (state, action) => {
       state.loading = false;
-      state.success = action.payload.success;
 
       if (action.payload.error) {
         state.error = action.payload.error;
+        state.dashboard=action.payload.success;
       } else {
         state.posts = action.payload.allpost;
         state.userDetails = action.payload.userDetails;
+        state.dashboard=action.payload.success;
       }
     },
     [getAllPost.pending]: (state) => {
       state.loading = true;
+      state.dashboard = false;
     },
     [getAllPost.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.payload.error;
+      state.dashboard = false;
     },
 
     [getOnePost.fulfilled]: (state, action) => {

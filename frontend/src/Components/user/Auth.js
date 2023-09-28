@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signupUser, signinUser } from "../../Reducers/auth.js";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -43,6 +44,12 @@ const Test = () => {
   const { errorsignin, successsignin, errorsignup, successsignup } =
     useSelector((state) => state.user);
 
+  const dashboard = useSelector((state) => state.post.dashboard);
+  console.log(dashboard);
+
+
+
+
   useEffect(() => {
     if (successsignup == false && errorsignup !== "") {
       toast.error(errorsignup);
@@ -53,14 +60,16 @@ const Test = () => {
   }, [errorsignup, successsignup]);
 
   useEffect(() => {
-    if (successsignin == false && errorsignin !== "") {
+    console.log(errorsignin, successsignin, signined,dashboard);
+
+    if (!dashboard && successsignin == false && errorsignin !== "") {
       toast.error(errorsignin);
     } else if (signined && successsignin == true && errorsignin !== "") {
       toast.success("Logout Successfully");
-    } else if (successsignin == true && errorsignin !== "") {
+    } else if (!dashboard &&successsignin == true && errorsignin !== "") {
       toast.success(errorsignin);
     }
-  }, [errorsignin, successsignin, signined]);
+  }, [errorsignin, successsignin, signined,dashboard]);
 
   const handleSubmit2 = async (e) => {
     e.preventDefault();

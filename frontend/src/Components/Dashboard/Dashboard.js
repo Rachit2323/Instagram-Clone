@@ -40,6 +40,7 @@ const Dashboard = () => {
   const [commentopensection, setCommentOpenSection] = useState(false);
   const [loadingstate, setLoadingState] = useState(false);
   const [showpostupdate, setShowPostUpdate] = useState(false);
+  const [signined, setIsSignined] = useState(true);
 
   const handleCommentChange = (event) => {
     setLoadingState((prev) => !prev);
@@ -115,13 +116,11 @@ const Dashboard = () => {
     navigate("/setting");
   };
   const addComment = (sectionId) => {
-
     setCommentModal((prevSections) => ({
       // ...prevSections,
       [sectionId]: !prevSections[sectionId],
     }));
   };
-
 
   const savePost = (postId) => {
     setLoadingState((prev) => !prev);
@@ -150,11 +149,6 @@ const Dashboard = () => {
     (state) => state.post
   );
   const { errorsignin, successsignin } = useSelector((state) => state.user);
-  useEffect(() => {
-    if (successsignin === true) {
-      toast.success(errorsignin);
-    }
-  }, [errorsignin]);
 
   useEffect(() => {
     if (createsuccess == true) {
@@ -173,6 +167,21 @@ const Dashboard = () => {
       }, 2000);
     }
   }, [loadingstate, showpostupdate]);
+
+  const dashboard = useSelector((state) => state.post.dashboard);
+  console.log(dashboard);
+
+  useEffect(() => {
+    console.log(dashboard);
+    if (!dashboard) {
+      console.log(dashboard);
+      if (successsignin === false && errorsignin !== "") {
+        toast.error(errorsignin);
+      } else if (successsignin === true) {
+        toast.success(errorsignin);
+      }
+    }
+  }, [successsignin, errorsignin]);
 
   const ImageBack = () => {
     setImageSave(false);
@@ -238,13 +247,15 @@ const Dashboard = () => {
               <div className="post_wrapper_00" key={post._id}>
                 <div className="post_wrapper_01">
                   <div className="post_wrapper_011">
-                    <img src={post.postedBy.profileimg?.url} alt="User Profile" />
+                    <img
+                      src={post.postedBy.profileimg?.url}
+                      alt="User Profile"
+                    />
                     <section>
                       <span>{post.postedBy.username}</span>
                       <span style={{ fontWeight: "400" }}>
                         {moment(post.createdAt).fromNow()}
                       </span>
-
                     </section>
                   </div>
                   <FiMoreHorizontal
@@ -300,10 +311,7 @@ const Dashboard = () => {
 
                   <p>
                     <strong style={{ fontWeight: "bold" }}>
-                      {
-                     
-                        post?.postedBy?.username +  " "
-                      }
+                      {post?.postedBy?.username + " "}
                     </strong>
                     {post.caption}
                     {/* <strong style={{ color: "#989898" }}>more</strong> */}
@@ -320,13 +328,12 @@ const Dashboard = () => {
                             marginLeft: "10px",
                             fontSize: "14px",
                             borderTop: "1px solid lightgray",
-                            borderLeft: "1px solid lightgray"
+                            borderLeft: "1px solid lightgray",
                           }}
                         >
                           {`By ${item.userId.username} : `}
                           <span style={{ color: "gray" }}>{item.text}</span>
                         </h5>
-
                       </div>
                     ))}
 
@@ -345,7 +352,7 @@ const Dashboard = () => {
                             color: "white",
                           }}
                           placeholder="Your text here..."
-                          value={commentText[post._id]}  // by this only for particular commenttext is written on selected post
+                          value={commentText[post._id]} // by this only for particular commenttext is written on selected post
                           onChange={handleCommentChange}
                         />
 
