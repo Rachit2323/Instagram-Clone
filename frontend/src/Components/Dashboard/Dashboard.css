@@ -187,9 +187,9 @@
 }
 
 .post_wrapper_02 > img {
-  object-fit: cover;
+  object-fit: contain;
   width: 100%;
-  height: 408px;
+  height: 400px;
 }
 
 .post_wrapper_03 {

@@ -228,8 +228,8 @@ const Dashboard = () => {
           <div className="dashboard_story_wrapper_mid">
             <div className="dashboard_story_wrapper">
               <section>
-                <img src={mine} />
-                <span>Rachit sharma</span>
+                <img src={userDetails?.profileimg?.url} />
+                <span>{userDetails?.username}</span>
               </section>
             </div>
 
@@ -237,13 +237,13 @@ const Dashboard = () => {
               <div className="post_wrapper_00" key={post._id}>
                 <div className="post_wrapper_01">
                   <div className="post_wrapper_011">
-                    <img src={post.image.url} alt="User Profile" />
+                    <img src={post.postedBy.profileimg?.url} alt="User Profile" />
                     <section>
                       <span>{post.postedBy.username}</span>
                       <span style={{ fontWeight: "400" }}>
                         {moment(post.createdAt).fromNow()}
                       </span>
-                      {/* to find the when it was updated */}
+
                     </section>
                   </div>
                   <FiMoreHorizontal
@@ -369,9 +369,9 @@ const Dashboard = () => {
             <section>
               <div className="post_wrapper_01">
                 <div className="post_wrapper_011">
-                  <img src={mine} />
+                  <img src={userDetails?.profileimg?.url} />
                   <section>
-                    <span>{userDetails.username}</span>
+                    <span>{userDetails?.username}</span>
                     <span style={{ fontWeight: "400" }}>Delhi , India</span>
                   </section>
                 </div>

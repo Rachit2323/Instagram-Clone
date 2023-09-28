@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
-//  const API="https://ins01.onrender.com/";
-const API = "http://localhost:4000/";
+ const API="https://ins01.onrender.com/";
+// const API = "http://localhost:4000/";
 const initialState = {
   posts: [],
   postsone: [],
@@ -251,7 +251,7 @@ export const Profileupdate = createAsyncThunk(
   async (updatedPostData) => { 
 
     try {
-      console.log(updatedPostData); // Logging the updatedPostData
+
       const token = localStorage.getItem("token");
       const formData = new FormData();
       formData.append("file", updatedPostData.image); // Access the image property from updatedPostData
@@ -264,6 +264,7 @@ export const Profileupdate = createAsyncThunk(
       });
 
       const data = await result.json();
+
 
       return data;
     } catch (error) {

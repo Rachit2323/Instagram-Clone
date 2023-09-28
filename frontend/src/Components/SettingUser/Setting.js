@@ -69,10 +69,13 @@ const Setting = () => {
     }
   };
   
-  const userProfile = useSelector((state) => state.post.profileimg);
-
 
   const userDetails = useSelector((state) => state.post.userDetails);
+
+
+
+
+  // const userDetails = useSelector((state) => state.post.userDetails);
   
 
   const posts = useSelector((state) => state.post.postsone);
@@ -105,7 +108,7 @@ const Setting = () => {
         <div className="setting_navbar_00">
           <div className="image_upload_user">
           <label htmlFor="fileInput">
-            <img src={userProfile} />
+            <img src={userDetails?.profileimg?.url} />
             <input
                   id="fileInput"
                   type="file"
