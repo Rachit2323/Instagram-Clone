@@ -5,10 +5,10 @@ import { useSelector } from "react-redux";
 const initialState = {
   posts: [],
   postsone: [],
-  searchpost:[],
-  searchpostmsg:"",
-  searchpostloading:false,
-  dashboard:false,
+  searchpost: [],
+  searchpostmsg: "",
+  searchpostloading: false,
+  dashboard: false,
   loading: false,
   error: "",
   createmg: "",
@@ -24,15 +24,16 @@ const initialState = {
   userDetails: "",
   mysavedpost: [],
   mysavedpostmsg: "",
-  profileimg:"",
-  profileimgmsg:"",
-  seachuserpost:[],
-  seachusersavedpost:[],
-  searchusermsg:"",
-  searchuserdetails:"",
-  verified:false,
+  profileimg: "",
+  profileimgmsg: "",
+  seachuserpost: [],
+  seachusersavedpost: [],
+  searchusermsg: "",
+  searchuserdetails: "",
+  verified: false,
+  followsuccess: false,
+  followmsg: "",
 };
-
 
 export const createPost = createAsyncThunk(
   "createpost",
@@ -94,7 +95,6 @@ export const getSearchPost = createAsyncThunk("getSearchPost", async (user) => {
 
     const data = await result.json();
 
-
     return data;
   } catch (error) {
     return { error: error.message };
@@ -109,7 +109,6 @@ export const getOnePost = createAsyncThunk("getOnepost", async () => {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
-        
       },
     });
 
@@ -125,7 +124,6 @@ export const addComments = createAsyncThunk(
   "addcomments",
   async ({ postId, commentText }) => {
     try {
-
       const token = localStorage.getItem("token");
 
       const result = await fetch(`${API}post/addComment`, {
@@ -254,10 +252,8 @@ export const editPost = createAsyncThunk(
 
 export const Profileupdate = createAsyncThunk(
   "Profileupdate",
-  async (updatedPostData) => { 
-
+  async (updatedPostData) => {
     try {
-
       const token = localStorage.getItem("token");
       const formData = new FormData();
       formData.append("file", updatedPostData.image); // Access the image property from updatedPostData
@@ -271,7 +267,6 @@ export const Profileupdate = createAsyncThunk(
 
       const data = await result.json();
 
-
       return data;
     } catch (error) {
       return { error: error.message };
@@ -281,25 +276,23 @@ export const Profileupdate = createAsyncThunk(
 
 export const getUserAllDetails = createAsyncThunk(
   "getUserAllDetails",
-  async (usernameprofile) => { 
+  async (usernameprofile) => {
     try {
-
       const token = localStorage.getItem("token");
-      
+
       // Construct the URL with a query parameter for usernameprofile
       const url = `${API}post/getAllDetails?usernameprofile=${usernameprofile}`;
-      
+
       const result = await fetch(url, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-        
       });
 
       const data = await result.json();
-      
+
       return data;
     } catch (error) {
       return { error: error.message };
@@ -307,8 +300,26 @@ export const getUserAllDetails = createAsyncThunk(
   }
 );
 
+export const followUser = createAsyncThunk("followUser", async (userID) => {
+  try {
+    const token = localStorage.getItem("token");
+    const url = `${API}post/follow?user=${userID}`;
 
+    const result = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
+    const data = await result.json();
+
+    return data;
+  } catch (error) {
+    return { error: error.message };
+  }
+});
 
 const postReducer = createSlice({
   name: "post",
@@ -333,13 +344,13 @@ const postReducer = createSlice({
 
       if (action.payload.error) {
         state.error = action.payload.error;
-        state.dashboard=action.payload.success;
-         state.verified=action.payload.result;
+        state.dashboard = action.payload.success;
+        state.verified = action.payload.result;
       } else {
         state.posts = action.payload.allpost;
         state.userDetails = action.payload.userDetails;
-        state.dashboard=action.payload.success;
-        state.verified=action.payload.result;
+        state.dashboard = action.payload.success;
+        state.verified = action.payload.result;
       }
     },
     [getAllPost.pending]: (state) => {
@@ -454,8 +465,8 @@ const postReducer = createSlice({
         state.searchpostmsg = action.payload.error;
       } else {
         state.searchpost = action.payload.allpost;
-        state.searchpostmsg=action.payload.message;
-        state.searchpostloading=action.payload.success;
+        state.searchpostmsg = action.payload.message;
+        state.searchpostloading = action.payload.success;
       }
     },
     [getSearchPost.pending]: (state) => {
@@ -470,23 +481,20 @@ const postReducer = createSlice({
       state.loading = false;
       state.success = action.payload.success;
 
-
       if (action.payload.error) {
         state.profileimgmsg = action.payload.error;
       } else {
         state.profileimg = action.payload.userDetails.profileimg.url;
-        state.profileimgmsg=action.payload.message;
-
+        state.profileimgmsg = action.payload.message;
       }
     },
     [Profileupdate.pending]: (state) => {
       state.loading = true;
     },
-  
-      [getUserAllDetails.fulfilled]: (state, action) => {
+
+    [getUserAllDetails.fulfilled]: (state, action) => {
       state.loading = false;
       state.success = action.payload.success;
-
 
       if (action.payload.error) {
         state.searchusermsg = action.payload.error;
@@ -494,18 +502,26 @@ const postReducer = createSlice({
         state.seachuserpost = action.payload.allpost;
         state.searchuserdetails = action.payload.searachuser;
         state.seachusersavedpost = action.payload.savedpost;
-        state.searchusermsg=action.payload.message;
-
+        state.searchusermsg = action.payload.message;
       }
     },
     [getUserAllDetails.pending]: (state) => {
       state.loading = true;
     },
 
-    
+    [followUser.fulfilled]: (state, action) => {
+      state.loading = false;
+
+      if (action.payload.error) {
+        state.followmsg = action.payload.error;
+      } else {
+        state.followmsg = action.payload.message;
+        state.followsuccess = action.payload.success;
+      }
+    },
   },
 });
 
 export default postReducer.reducer;
-  // :[],
-  // :[]
+// :[],
+// :[]

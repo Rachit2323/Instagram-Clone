@@ -24,6 +24,7 @@ import {
   createPost,
   getAllPost,
   addComments,
+  followUser,
   addLikes,
   savedpost,
 } from "../../Reducers/createpost.js";
@@ -65,6 +66,7 @@ const Dashboard = () => {
   );
 
   const userDetails = useSelector((state) => state.post.userDetails);
+
 
   const savedmsg = useSelector((state) => state.post.savedmsg);
   const savedsuccess = useSelector((state) => state.post.savedsuccess);
@@ -151,6 +153,9 @@ const Dashboard = () => {
   );
   const { errorsignin, successsignin } = useSelector((state) => state.user);
 
+  const { followsuccess, followmsg } = useSelector((state) => state.post);
+
+
   useEffect(() => {
     if (createsuccess == true) {
       setCloseModal(true);
@@ -161,7 +166,6 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(getAllPost());
 
-    // Delay the reload by 1 seconds
     if (showpostupdate) {
       setTimeout(() => {
         window.location.reload();
@@ -171,11 +175,12 @@ const Dashboard = () => {
 
   const dashboard = useSelector((state) => state.post.dashboard);
 
+  const handleFollow = (userId) => {
+    dispatch(followUser(userId));
+  };
 
   useEffect(() => {
-
     if (!dashboard) {
-
       if (successsignin === false && errorsignin !== "") {
         toast.error(errorsignin);
       } else if (successsignin === true) {
@@ -211,12 +216,11 @@ const Dashboard = () => {
     });
   };
 
-  const handleInputChange = (event) => {
-    setSearchText(event.target.value);
+  const handleprofile = (username) => {
+    navigate(`/${username}`);
   };
-const handleprofile=(username)=>{
- navigate(`/${username}`)
-}
+
+
   return (
     <div className="dashboard_wrapper">
       <div className="dashboard_wrapper_00">
@@ -240,7 +244,7 @@ const handleprofile=(username)=>{
 
           <div className="dashboard_story_wrapper_mid">
             <div className="dashboard_story_wrapper">
-            <section >
+              <section>
                 <img src={userDetails?.profileimg?.url} />
                 <span>{userDetails?.username}</span>
               </section>
@@ -261,7 +265,13 @@ const handleprofile=(username)=>{
                         {moment(post?.createdAt).fromNow()}
                       </span>
                     </section>
+                    <span onClick={() => handleFollow(post?.postedBy?._id)}>
+                      {post?.postedBy?.followers.includes(userDetails._id)
+                        ? "Unfollow"
+                        : "Follow"}
+                    </span>
                   </div>
+
                   <FiMoreHorizontal
                     style={{ color: "white", cursor: "pointer" }}
                   />

@@ -73,6 +73,7 @@ const Setting = () => {
   const userDetails = useSelector((state) => state.post.userDetails);
 
 
+
   // const userDetails = useSelector((state) => state.post.userDetails);
   
 
@@ -122,8 +123,8 @@ const Setting = () => {
 
             <section>
               <span>{allPost.length} post</span>
-              <span>12 Followers</span>
-              <span>12 Followings</span>
+              <span>{userDetails?.followers?.length} Followers</span>
+              <span>{userDetails?.following?.length} Followings</span>
             </section>
           </section>
         </div>
