@@ -35,22 +35,19 @@ exports.createPost = async (req, res) => {
   }
 };
 
-
 exports.allPost = async (req, res) => {
   try {
     const allpost = await Post.find()
-      .populate("postedBy", "username createdAt profileimg")
+      .populate("postedBy", "username createdAt profileimg followers following")
       .populate("comments.userId", "username")
       .populate("likes.userId", "username")
       .sort({ createdAt: -1 });
     const userDetails = await User.findById(req.userId);
-    const result=userDetails.verified;
-    if(!userDetails.verified)
-    {
-     
+    const result = userDetails.verified;
+    if (!userDetails.verified) {
       res.status(400).json({
         success: false,
-         result,
+        result,
         message: "User is not valid",
       });
     }
@@ -343,7 +340,6 @@ exports.profile = async (req, res) => {
     const mycloud = await cloudinary.v2.uploader.upload(fileUri.content);
 
     const userDetails = await User.findById(req.userId);
-    
 
     if (!userDetails) {
       return res.status(404).json({
@@ -377,12 +373,12 @@ exports.UserAllDetails = async (req, res) => {
     const { usernameprofile } = req.query;
 
     const searachuser = await User.find({ username: usernameprofile }).select(
-      "_id profileimg"
+      "_id profileimg followers following"
     );
 
     const allpost = await Post.find({ postedBy: searachuser[0]._id });
     const savedpost = await Post.find({ SavedBy: searachuser[0]._id });
-    // console.log(allpost, savedpost, searachuser);
+
     res.status(200).json({
       success: true,
       allpost,
@@ -394,6 +390,55 @@ exports.UserAllDetails = async (req, res) => {
     res.status(500).json({
       success: false,
       error: "Failed to retrieve Searched details",
+    });
+  }
+};
+
+exports.followuser = async (req, res) => {
+  try {
+    const { user } = req.query;
+    const userIdToFollow = req.userId;
+
+    const userToFollow = await User.findById(user);
+    const usertoFollowing = await User.findById(userIdToFollow);
+
+    if (!userToFollow || !usertoFollowing) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    const isAlreadyFollowing = userToFollow.followers.includes(userIdToFollow);
+
+    if (isAlreadyFollowing) {
+      if (userToFollow.followers.length > 0) {
+        userToFollow.followers.pull(userIdToFollow);
+      }
+      if (usertoFollowing.following.length > 0) {
+        usertoFollowing.following.pull(userToFollow._id);
+      }
+      await userToFollow.save();
+      await usertoFollowing.save();
+      return res.status(200).json({
+        success: false,
+        message: "User Unfollowed Successfully",
+      });
+    } else {
+      userToFollow.followers.push(userIdToFollow);
+      usertoFollowing.following.push(userToFollow._id);
+    }
+
+    await userToFollow.save();
+    await usertoFollowing.save();
+    return res.status(200).json({
+      success: true,
+      message: "User Followed Successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: "An error occurred while Follow/Unfollow User",
     });
   }
 };

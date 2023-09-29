@@ -22,7 +22,9 @@ app.post("/mysavepost",authMiddleware,homeController.mysavepost);
 app.post("/deletePost",authMiddleware,homeController.deletePost);
 app.post("/editPost",authMiddleware,homeController.editPost);
 app.post("/profileimg",authMiddleware,singleUpload,homeController.profile);
-app.post("/getAllDetails?",authMiddleware,homeController.UserAllDetails);
+app.post("/getAllDetails",authMiddleware,homeController.UserAllDetails);
+app.post('/follow',authMiddleware,homeController.followuser);
+
 
 
 

@@ -144,7 +144,7 @@ exports.signin = async (req, res) => {
     if (!userverify) {
       return res.status(404).json({ success: false, error: "User not found" });
     }
-     console.log(userverify.verified);
+
     if (!userverify.verified) {
 
       return res.status(401).json({success: false,error: "Please verify yourself" });
