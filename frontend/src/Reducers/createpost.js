@@ -29,7 +29,8 @@ const initialState = {
   seachuserpost:[],
   seachusersavedpost:[],
   searchusermsg:"",
-  searchuserdetails:""
+  searchuserdetails:"",
+  verified:false,
 };
 
 
@@ -333,10 +334,12 @@ const postReducer = createSlice({
       if (action.payload.error) {
         state.error = action.payload.error;
         state.dashboard=action.payload.success;
+         state.verified=action.payload.result;
       } else {
         state.posts = action.payload.allpost;
         state.userDetails = action.payload.userDetails;
         state.dashboard=action.payload.success;
+        state.verified=action.payload.result;
       }
     },
     [getAllPost.pending]: (state) => {

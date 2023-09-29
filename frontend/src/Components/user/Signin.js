@@ -13,9 +13,8 @@ import { signupUser, signinUser } from "../../Reducers/auth.js";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Test = () => {
+const Signin = () => {
   const [isCardFlipped, setIsCardFlipped] = useState(false);
-
   const [showPassword, setShowPassword] = useState(true);
   const [passowrdhintshow, setPasswordHintShow] = useState(false);
   const [signined, setIsSignined] = useState(true);
@@ -32,7 +31,8 @@ const Test = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleCardToggle = () => {
-    navigate("/signin");
+
+    navigate("/");
     setIsCardFlipped(!isCardFlipped);
   };
 
@@ -46,6 +46,10 @@ const Test = () => {
 
   const dashboard = useSelector((state) => state.post.dashboard);
 
+
+
+
+
   useEffect(() => {
     if (successsignup == false && errorsignup !== "") {
       toast.error(errorsignup);
@@ -56,14 +60,16 @@ const Test = () => {
   }, [errorsignup, successsignup]);
 
   useEffect(() => {
+
+
     if (!dashboard && successsignin == false && errorsignin !== "") {
       toast.error(errorsignin);
     } else if (signined && successsignin == true && errorsignin !== "") {
       toast.success("Logout Successfully");
-    } else if (!dashboard && successsignin == true && errorsignin !== "") {
+    } else if (!dashboard &&successsignin == true && errorsignin !== "") {
       toast.success(errorsignin);
     }
-  }, [errorsignin, successsignin, signined, dashboard]);
+  }, [errorsignin, successsignin, signined,dashboard]);
 
   const handleSubmit2 = async (e) => {
     e.preventDefault();
@@ -121,42 +127,31 @@ const Test = () => {
                 }`}
               >
                 <section>
-                  <span> Sign Up </span>
+                  <span> Sign in</span>
                   <section>
-                    <span>Username</span>
+                    <span>Username or Email</span>
                     {
                       <input
                         type="text"
-                        name="username"
-                        onChange={handleChange}
-                        placeholder="Enter your username"
-                        value={formData.username}
+                        name="usernameOrEmail"
+                        onChange={handleChange2}
+                        placeholder="Enter your username or email"
+                        value={formData2.usernameOrEmail}
                       />
                     }
                   </section>
-                  { 
-                    <section>
-                      <span>Email</span>
-                      <input
-                        type="email"
-                        name="email"
-                        onChange={handleChange}
-                        placeholder="Enter your email"
-                        value={formData.email}
-                      />
-                    </section>
-                  }
+                 
 
                   <section>
                     <span>Password</span>
                     <div className="password-input-container">
-                      {
+                      { 
                         <input
                           type={!showPassword ? "text" : "password"}
                           name="password"
-                          onChange={handleChange}
+                          onChange={handleChange2}
                           placeholder="Enter your password"
-                          value={formData.password}
+                          value={formData2.password}
                         />
                       }
 
@@ -186,12 +181,16 @@ const Test = () => {
                     </div>
                   )}
 
-                  <button onClick={handleSubmit}>Sign Up</button>
+                  <button onClick={handleSubmit2}>
+                   Sign in
+                  </button>
 
                   <p>
-                     Already have an account? 
                     
-                    <span onClick={handleCardToggle}> Sign in</span>
+                      Don't have an account! 
+                    <span onClick={handleCardToggle}>
+                       Sign up
+                    </span>
                   </p>
                 </section>
               </div>
@@ -204,4 +203,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default Signin;

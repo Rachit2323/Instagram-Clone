@@ -251,14 +251,14 @@ const handleprofile=(username)=>{
                 <div className="post_wrapper_01">
                   <div className="post_wrapper_011">
                     <img
-                      src={post.postedBy.profileimg?.url}
+                      src={post?.postedBy?.profileimg?.url}
                       alt="User Profile"
-                      onClick={() => handleprofile(post.postedBy.username)}
+                      onClick={() => handleprofile(post?.postedBy?.username)}
                     />
                     <section>
-                      <span>{post.postedBy.username}</span>
+                      <span>{post?.postedBy?.username}</span>
                       <span style={{ fontWeight: "400" }}>
-                        {moment(post.createdAt).fromNow()}
+                        {moment(post?.createdAt).fromNow()}
                       </span>
                     </section>
                   </div>

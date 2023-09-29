@@ -5,7 +5,7 @@ import "./App.css";
 import Dashboard from './Components/Dashboard/Dashboard.js';
 import Setting from './Components/SettingUser/Setting.js';
 import Profile from './Components/Profile/Profile.js';
-
+import Signin from "./Components/user/Signin.js"
 
 const App = () => {
   
@@ -13,6 +13,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Auth/>}/>
+        <Route path ="/signin" element={<Signin/>}/>
         <Route path="/post" element={<Dashboard/>}/>
         <Route path="/setting" element={<Setting/>}/>
         <Route path="/:usernameprofile" element={<Profile/>} />

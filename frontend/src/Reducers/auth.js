@@ -13,6 +13,7 @@ const initialState = {
 
 export const signupUser = createAsyncThunk("signupuser", async (body) => {
   try {
+
     const result = await fetch(`${API}users/signup`, {
       method: "POST",
       headers: {
@@ -57,11 +58,12 @@ const authReducer = createSlice({
   extraReducers: {
     [signupUser.fulfilled]: (state, action) => {
       state.loading = false;
+      console.log(action.payload);
       if (action.payload.error) {
-        state.errorsignup = action.payload.error;
+        // state.errorsignup = action.payload.error;
         state.successsignup = action.payload.success;
       } else {
-
+        console.log(action.payload);
         state.errorsignup = action.payload.message;
         state.successsignup = action.payload.success;
       }
@@ -77,11 +79,13 @@ const authReducer = createSlice({
 
     [signinUser.fulfilled]: (state, action) => {
       state.loading = false;
-
+    
       if (action.payload.error) {
+      
         state.errorsignin = action.payload.error;
         state.successsignin = action.payload.success;
-      } else {
+      } else { 
+       
         state.errorsignin = action.payload.message;
         state.successsignin = action.payload.success;
       }
