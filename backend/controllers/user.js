@@ -73,7 +73,7 @@ exports.signup = async (req, res) => {
     await newUser.save();
 
     const mailOptions = {
-      from: `<p> The Creator ${process.env.AUTH_EMAIL}</p>`,
+      from: ` The Creator ${process.env.AUTH_EMAIL} `,
       to: newUser.email,
       subject: "Verify your Email",
       html: `<p>Verify your email ${newUser.username}</p>
