@@ -67,7 +67,6 @@ const Dashboard = () => {
 
   const userDetails = useSelector((state) => state.post.userDetails);
 
-
   const savedmsg = useSelector((state) => state.post.savedmsg);
   const savedsuccess = useSelector((state) => state.post.savedsuccess);
 
@@ -155,7 +154,6 @@ const Dashboard = () => {
 
   const { followsuccess, followmsg } = useSelector((state) => state.post);
 
-
   useEffect(() => {
     if (createsuccess == true) {
       setCloseModal(true);
@@ -220,7 +218,6 @@ const Dashboard = () => {
     navigate(`/${username}`);
   };
 
-
   return (
     <div className="dashboard_wrapper">
       <div className="dashboard_wrapper_00">
@@ -265,11 +262,13 @@ const Dashboard = () => {
                         {moment(post?.createdAt).fromNow()}
                       </span>
                     </section>
-                    <span onClick={() => handleFollow(post?.postedBy?._id)}>
-                      {post?.postedBy?.followers.includes(userDetails._id)
-                        ? "Unfollow"
-                        : "Follow"}
-                    </span>
+                    {!(post?.postedBy?._id === userDetails._id) && (
+                      <span onClick={() => handleFollow(post?.postedBy?._id)}>
+                        {post?.postedBy?.followers.includes(userDetails._id)
+                          ? "Unfollow"
+                          : "Follow"}
+                      </span>
+                    )}
                   </div>
 
                   <FiMoreHorizontal
