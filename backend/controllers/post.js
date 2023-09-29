@@ -35,28 +35,6 @@ exports.createPost = async (req, res) => {
   }
 };
 
-// exports.createStory = async (req, res) => {
-//   try {
-//     const { title, description, tags } = req.body;
-//     const tagsArray = tags ? tags : [];
-
-//     const newPost = new Story({
-//       title,
-//       description,
-//       postedBy: req.userId,
-//     });
-
-//     await newPost.save();
-
-//     res.status(200).json({ success: true, error: "Story created succesfully" });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({
-//       success: false,
-//       error: "An error occurred during creating Story",
-//     });
-//   }
-// };
 
 exports.allPost = async (req, res) => {
   try {
@@ -66,11 +44,22 @@ exports.allPost = async (req, res) => {
       .populate("likes.userId", "username")
       .sort({ createdAt: -1 });
     const userDetails = await User.findById(req.userId);
+    const result=userDetails.verified;
+    if(!userDetails.verified)
+    {
+     
+      res.status(400).json({
+        success: false,
+         result,
+        message: "User is not valid",
+      });
+    }
 
     res.status(200).json({
       success: true,
       allpost,
       userDetails,
+      result,
       message: "Posts fetched successfully",
     });
   } catch (error) {
@@ -354,6 +343,7 @@ exports.profile = async (req, res) => {
     const mycloud = await cloudinary.v2.uploader.upload(fileUri.content);
 
     const userDetails = await User.findById(req.userId);
+    
 
     if (!userDetails) {
       return res.status(404).json({

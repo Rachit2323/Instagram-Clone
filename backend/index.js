@@ -1,29 +1,32 @@
 const express = require("express");
-// const connectMongoDb=require('./database/connectMongoDb')
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary");
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 const app = express();
 const userRoutes = require("./routes/user.js");
 const postRoutes = require("./routes/post.js");
 const cors = require("cors");
-  require("dotenv").config();
-
 
 app.use(express.json());
-// app.use(
-//   cors({
-//     origin: 'http://localhost:3000', // Replace with your frontend's URL
-//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allow the required HTTP methods
-//     credentials: true, // Enable credentials (e.g., cookies)
-//   })
-// );
 
+// Uncomment and configure CORS as needed
+// Option 1: Allow requests from a specific origin
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Replace with your frontend's URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  })
+);
+
+// Option 2: Allow requests from multiple origins
 // app.use(cors({
-//   origin: ["https://charming-belekoy-1d7e17.netlify.app", "http://localhost:3000"]
+//   origin: ["https://charming-belekoy-1d7e17.netlify.app", "http://localhost:3000"],
+//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//   credentials: true,
 // }));
-
-app.use(cors());
 
 cloudinary.v2.config({
   cloud_name: "dyedquiym",
@@ -35,7 +38,7 @@ app.use("/users", userRoutes);
 app.use("/post", postRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Hello I am here dead");
+  res.send("Hello, I am here and running!");
 });
 
 mongoose

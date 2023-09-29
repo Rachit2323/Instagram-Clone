@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     },
     url: {
       type: String,
-      default: 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png',
+      default: "https://cdn-icons-png.flaticon.com/512/3177/3177440.png",
     },
   },
   email: {
@@ -28,24 +28,34 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  googleId:{
-    type:String
+  googleId: {
+    type: String,
   },
-  followers: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', 
-  }],
-  following: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-  }],
-
-  status:{
-    type:Number,
-    default:1,  // 0-> inactive 1 ->active
-  }
+  followers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  following: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
+  emailtoken:{
+    type:String,
+  },
+  verified: {
+    type: Boolean,
+    default:"false"
+  },
+  status: {
+    type: Number,
+    default: 1, // 0-> inactive 1 ->active
+  },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
