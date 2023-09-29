@@ -14,12 +14,13 @@ app.use(express.json());
 
 // Uncomment and configure CORS as needed
 // Option 1: Allow requests from a specific origin
-app.use(
-  cors({
-    origin: "http://localhost:3000", // Replace with your frontend's URL
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  })
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000", // Replace with your frontend's URL
+//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+//   })
+// );
+app.use(cors());
 
 // Option 2: Allow requests from multiple origins
 // app.use(cors({
