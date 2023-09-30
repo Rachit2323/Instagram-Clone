@@ -411,7 +411,7 @@ exports.followuser = async (req, res) => {
   try {
     const { user } = req.query;
     const userIdToFollow = req.userId;
-
+  
 
     const userToFollow = await User.findById(user);
     const usertoFollowing = await User.findById(userIdToFollow);
