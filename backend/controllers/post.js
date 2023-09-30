@@ -379,9 +379,22 @@ exports.UserAllDetails = async (req, res) => {
     const allpost = await Post.find({ postedBy: searachuser[0]._id });
     const savedpost = await Post.find({ SavedBy: searachuser[0]._id });
 
+    // console.log(searachuser);
+    const followerIds = searachuser[0].followers;
+    const followingIds=searachuser[0].following;
+
+
+    // Query the User collection to fetch the follower profiles
+    const allFollowers = await User.find({ _id: { $in: followerIds } });
+    const allFollowing = await User.find({ _id: { $in: followingIds } });
+    // console.log(allFollowers,allFollowing);
+    // const allfollower=await User.find({})
+
     res.status(200).json({
       success: true,
       allpost,
+      allFollowers,
+      allFollowing,
       savedpost,
       searachuser,
       message: "Search User retrieved successfully",
@@ -398,6 +411,7 @@ exports.followuser = async (req, res) => {
   try {
     const { user } = req.query;
     const userIdToFollow = req.userId;
+
 
     const userToFollow = await User.findById(user);
     const usertoFollowing = await User.findById(userIdToFollow);
