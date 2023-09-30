@@ -304,7 +304,7 @@ export const getUserAllDetails = createAsyncThunk(
 
 export const followUser = createAsyncThunk("followUser", async (userID) => {
   try {
-
+   console.log(userID);
     const token = localStorage.getItem("token");
     const url = `${API}post/follow?user=${userID}`;
 

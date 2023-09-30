@@ -233,7 +233,7 @@ const Dashboard = () => {
               <span onClick={openUpload}>
                 <FaSquarePlus /> Create{" "}
               </span>
-              <span onClick={openSaved}>
+              <span onClick={() => handleprofile(userDetails?.username)}>
                 <BsBookmarkFill /> Saved
               </span>
             </section>
@@ -399,7 +399,7 @@ const Dashboard = () => {
                 </div>
                 <FiSettings
                   style={{ color: "white", cursor: "pointer" }}
-                  onClick={()=>handleprofile(userDetails?.username)}
+                  onClick={() => handleprofile(userDetails?.username)}
                 />
               </div>
             </section>

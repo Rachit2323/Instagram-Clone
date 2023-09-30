@@ -3,6 +3,7 @@ import post from "../SettingUser/Icons/post.svg";
 import save from "../SettingUser/Icons/Saved.svg";
 import "../SettingUser/Setting.css";
 import jwt_decode from "jwt-decode";
+import "../Dashboard/Dashboard.css";
 
 import "./Profile.css";
 import { followUser, getUserAllDetails } from "../../Reducers/createpost.js";
@@ -85,8 +86,13 @@ const Profile = () => {
     };
 
     const handleFollow = (userId) => {
+      console.log(userId);
       dispatch(followUser(userId));
     };
+
+    const token = localStorage.getItem("token");
+    const decoded = jwt_decode(token);
+    console.log(userDetails);
 
     return (
       <div className="follower_modal">
@@ -105,9 +111,13 @@ const Profile = () => {
                       />
                       <p>{follower?.username}</p>
                     </h1>
-                    <button onClick={() => handleFollow(follower?._id)}>
-                      Follow
-                    </button>
+                    {!(decoded.userId === follower?._id) && (
+                      <button onClick={() => handleFollow(follower?._id)}>
+                        {userDetails[0]?.followers?.includes(follower?._id)
+                          ? "Unfollow"
+                          : "Follow"}
+                      </button>
+                    )}
                   </section>
                 ))
               : allFollowerslist.map((follower) => (
@@ -119,9 +129,13 @@ const Profile = () => {
                       />
                       <p>{follower?.username}</p>
                     </h1>
-                    <button onClick={() => handleFollow(follower?._id)}>
-                      UnFollow
-                    </button>
+                    {!(decoded.userId === follower?._id) && (
+                      <button onClick={() => handleFollow(follower?._id)}>
+                        {userDetails[0]?.followers?.includes(follower?._id)
+                          ? "Unfollow"
+                          : "Follow"}
+                      </button>
+                    )}
                   </section>
                 ))}
           </div>
