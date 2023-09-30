@@ -127,6 +127,7 @@ const Setting = () => {
               <span>{userDetails?.following?.length} Followings</span>
             </section>
           </section>
+          
         </div>
         <span></span>
         <div className="setting_wrapper_types">

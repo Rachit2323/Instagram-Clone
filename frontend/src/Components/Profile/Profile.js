@@ -2,14 +2,20 @@ import React, { useState, useEffect } from "react";
 import post from "../SettingUser/Icons/post.svg";
 import save from "../SettingUser/Icons/Saved.svg";
 import "../SettingUser/Setting.css";
+import jwt_decode from "jwt-decode";
+
 import "./Profile.css";
+import { followUser, getUserAllDetails } from "../../Reducers/createpost.js";
 import {
   getOnePost,
   mysavedpostall,
+  deletePost,
+  editPost,
   getAllPost,
-  followUser,
-  getUserAllDetails,
+  Profileupdate,
 } from "../../Reducers/createpost.js";
+
+import { AiOutlineCloudUpload } from "react-icons/ai";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,7 +43,7 @@ const Profile = () => {
   const seachusermsg = useSelector((state) => state.post.searchusermsg);
   const followerlist = useSelector((state) => state.post.followuser);
   const followinglist = useSelector((state) => state.post.followinguser);
-
+  const [previewImage, setPreviewImage] = useState(null);
   useEffect(() => {
     dispatch(getUserAllDetails(usernameprofile));
   }, [dispatch, usernameprofile]);
@@ -79,10 +85,8 @@ const Profile = () => {
     };
 
     const handleFollow = (userId) => {
-
       dispatch(followUser(userId));
     };
-
 
     return (
       <div className="follower_modal">
@@ -101,7 +105,9 @@ const Profile = () => {
                       />
                       <p>{follower?.username}</p>
                     </h1>
-                    <button onClick={()=>handleFollow(follower?._id)}>Follow</button>
+                    <button onClick={() => handleFollow(follower?._id)}>
+                      Follow
+                    </button>
                   </section>
                 ))
               : allFollowerslist.map((follower) => (
@@ -113,7 +119,9 @@ const Profile = () => {
                       />
                       <p>{follower?.username}</p>
                     </h1>
-                    <button onClick={()=>handleFollow(follower?._id)}>UnFollow</button>
+                    <button onClick={() => handleFollow(follower?._id)}>
+                      UnFollow
+                    </button>
                   </section>
                 ))}
           </div>
@@ -126,7 +134,32 @@ const Profile = () => {
     setFollowerModalVisible(false);
   };
 
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0]; // Get the selected file
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        // Set the previewImage to the data URL of the selected image
+        setPreviewImage(e.target.result);
+
+        // Update the postData after the image has been read
+        const updatedPostData = {
+          image: file,
+        };
+
+        dispatch(Profileupdate(updatedPostData));
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const token = localStorage.getItem("token");
+  const decoded = jwt_decode(token);
+
   //  console.log(allPost,userDetails);
+
   return (
     <div style={{ height: "100vh" }}>
       <div className="setting_wrapper">
@@ -134,6 +167,18 @@ const Profile = () => {
           <div className="image_upload_user">
             <label htmlFor="fileInput">
               <img src={userDetails[0]?.profileimg?.url} />
+              {decoded.userId === userDetails[0]?._id && (
+                <>
+                  <input
+                    id="fileInput"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    style={{ display: "none" }}
+                  />
+                  <AiOutlineCloudUpload />
+                </>
+              )}
             </label>
           </div>
           <section>

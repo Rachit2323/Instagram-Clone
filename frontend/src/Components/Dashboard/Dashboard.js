@@ -264,7 +264,7 @@ const Dashboard = () => {
                     </section>
                     {!(post?.postedBy?._id === userDetails._id) && (
                       <span onClick={() => handleFollow(post?.postedBy?._id)}>
-                        {post?.postedBy?.followers.includes(userDetails._id)
+                        {post?.postedBy?.followers?.includes(userDetails?._id)
                           ? "Unfollow"
                           : "Follow"}
                       </span>
@@ -399,7 +399,7 @@ const Dashboard = () => {
                 </div>
                 <FiSettings
                   style={{ color: "white", cursor: "pointer" }}
-                  onClick={openSetting}
+                  onClick={()=>handleprofile(userDetails?.username)}
                 />
               </div>
             </section>
