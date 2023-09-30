@@ -1,0 +1,88 @@
+.follower_modal {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(13, 13, 13, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  color: white;
+}
+
+.follower_upload_modal {
+  position: relative;
+  background: #222121;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(58, 58, 57, 0.2);
+  max-width: 400px;
+  max-height: 600px;
+  height: 95%;
+  width: 90%;
+}
+.follower_upload_modal > svg {
+  cursor: pointer;
+  color: white;
+}
+
+.follower_upload_modal > span {
+  cursor: pointer;
+  display: flex;
+  width: 100%;
+  margin-top: 8px;
+  justify-content: center;
+  color: white;
+  margin: 0 auto;
+}
+
+.follower_upload_modal > p {
+  height: 1px;
+  width: 100%;
+  margin: 4px 0px;
+  background: white;
+}
+
+.follower_list {
+  max-height: 500px;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.follower_list > section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  width: 95%;
+}
+
+.follower_list > section > h1 {
+  gap: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.follower_list > section > h1 > img {
+  width: 60px;
+  height: 60px;
+  border-radius: 40px;
+}
+
+.follower_list > section > h1 > p {
+  font-family: "Roboto";
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  color: #fff;
+}
+
+.follower_list > section > button {
+  font-family: "Roboto";
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  color: #fff;
+}

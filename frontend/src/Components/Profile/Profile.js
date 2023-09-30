@@ -2,25 +2,32 @@ import React, { useState, useEffect } from "react";
 import post from "../SettingUser/Icons/post.svg";
 import save from "../SettingUser/Icons/Saved.svg";
 import "../SettingUser/Setting.css";
+import "./Profile.css";
 import {
   getOnePost,
   mysavedpostall,
   getAllPost,
+  followUser,
   getUserAllDetails,
 } from "../../Reducers/createpost.js";
+
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { AiOutlineClose } from "react-icons/ai";
+import mine from "./mineee.jpg";
 
 const Profile = () => {
   const [highlightedtype, setHightlightType] = useState(1);
   const [allPost, setAllPost] = useState([]);
+  const [allFollowerslist, setAllFollowersList] = useState([]);
+  const [allFollowingList, setAllFollowingList] = useState([]);
+  const [followerModalVisible, setFollowerModalVisible] = useState(false);
+  const [showFollowing, setShowFollowing] = useState(false);
+
   const [mysavedpost, setMySavedPost] = useState([]);
 
   const { usernameprofile } = useParams();
-
-  useEffect(() => {
-    dispatch(getUserAllDetails(usernameprofile));
-  }, []);
 
   const dispatch = useDispatch();
 
@@ -28,25 +35,100 @@ const Profile = () => {
   const userDetails = useSelector((state) => state.post.searchuserdetails);
   const searchsavepost = useSelector((state) => state.post.seachusersavedpost);
   const seachusermsg = useSelector((state) => state.post.searchusermsg);
-  // const  = useSelector((state) => state.post.userDetails);
+  const followerlist = useSelector((state) => state.post.followuser);
+  const followinglist = useSelector((state) => state.post.followinguser);
 
+  useEffect(() => {
+    dispatch(getUserAllDetails(usernameprofile));
+  }, [dispatch, usernameprofile]);
+
+  // const  = useSelector((state) => state.post.userDetails);
 
   useEffect(() => {
     setMySavedPost(searchsavepost);
   }, [searchsavepost]);
 
-
   useEffect(() => {
     setAllPost(searchuserPosts);
   }, [searchuserPosts]);
+
+  useEffect(() => {
+    setAllFollowersList(followerlist);
+    setAllFollowingList(followinglist);
+  }, [followerlist, followinglist]);
 
   const handleType = () => {
     if (highlightedtype === 1) setHightlightType(2);
     else setHightlightType(1);
   };
 
+  const showFollower = (text) => {
+    if (text === "following") {
+      setShowFollowing(true);
+    } else {
+      setShowFollowing(false);
+    }
+    setFollowerModalVisible(true);
+  };
+
+  const FollowerModal = ({ onClose }) => {
+    const navigate = useNavigate();
+    const handleFollowclick = (username) => {
+      navigate(`/${username}`);
+      setFollowerModalVisible(false);
+    };
+
+    const handleFollow = (userId) => {
+
+      dispatch(followUser(userId));
+    };
+
+
+    return (
+      <div className="follower_modal">
+        <div className="follower_upload_modal">
+          <AiOutlineClose onClick={onClose} />
+          <span>{showFollowing ? "All Following" : "All Followers"}</span>
+          <p></p>
+          <div className="follower_list">
+            {showFollowing
+              ? allFollowingList.map((follower) => (
+                  <section key={follower._id}>
+                    <h1 onClick={() => handleFollowclick(follower?.username)}>
+                      <img
+                        src={follower?.profileimg?.url}
+                        alt={follower.username}
+                      />
+                      <p>{follower?.username}</p>
+                    </h1>
+                    <button onClick={()=>handleFollow(follower?._id)}>Follow</button>
+                  </section>
+                ))
+              : allFollowerslist.map((follower) => (
+                  <section key={follower._id}>
+                    <h1 onClick={() => handleFollowclick(follower?.username)}>
+                      <img
+                        src={follower?.profileimg?.url}
+                        alt={follower.username}
+                      />
+                      <p>{follower?.username}</p>
+                    </h1>
+                    <button onClick={()=>handleFollow(follower?._id)}>UnFollow</button>
+                  </section>
+                ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const closeFollowerModal = () => {
+    setFollowerModalVisible(false);
+  };
+
+  //  console.log(allPost,userDetails);
   return (
-    <div>
+    <div style={{ height: "100vh" }}>
       <div className="setting_wrapper">
         <div className="setting_navbar_00">
           <div className="image_upload_user">
@@ -59,10 +141,23 @@ const Profile = () => {
 
             <section>
               <span>{allPost.length} post</span>
-              <span>{userDetails[0]?.followers.length} Followers</span>
-              <span>{userDetails[0]?.following.length}  Followings</span>
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={() => showFollower("follower")}
+              >
+                {userDetails[0]?.followers.length} Followers
+              </span>
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={() => showFollower("following")}
+              >
+                {userDetails[0]?.following.length} Followings
+              </span>
             </section>
           </section>
+          {followerModalVisible && (
+            <FollowerModal onClose={closeFollowerModal} />
+          )}
         </div>
         <span></span>
         <div className="setting_wrapper_types">

@@ -33,6 +33,8 @@ const initialState = {
   verified: false,
   followsuccess: false,
   followmsg: "",
+  followuser:[],
+  followinguser:[],
 };
 
 export const createPost = createAsyncThunk(
@@ -302,6 +304,7 @@ export const getUserAllDetails = createAsyncThunk(
 
 export const followUser = createAsyncThunk("followUser", async (userID) => {
   try {
+
     const token = localStorage.getItem("token");
     const url = `${API}post/follow?user=${userID}`;
 
@@ -495,14 +498,17 @@ const postReducer = createSlice({
     [getUserAllDetails.fulfilled]: (state, action) => {
       state.loading = false;
       state.success = action.payload.success;
-
+         
       if (action.payload.error) {
         state.searchusermsg = action.payload.error;
       } else {
+
         state.seachuserpost = action.payload.allpost;
         state.searchuserdetails = action.payload.searachuser;
         state.seachusersavedpost = action.payload.savedpost;
         state.searchusermsg = action.payload.message;
+        state.followuser=action.payload.allFollowers;
+        state.followinguser=action.payload.allFollowing;
       }
     },
     [getUserAllDetails.pending]: (state) => {
