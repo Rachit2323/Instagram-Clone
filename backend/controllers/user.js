@@ -10,20 +10,70 @@ const SECRET_KEY = "knsincjjscbjdcjbbbej3e3u8b";
 const googleClientId =
   "431980266310-k4b3dj9i3rqpmqag7bukt5b66h77pnae.apps.googleusercontent.com";
 
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.AUTH_EMAIL,
-    pass: process.env.AUTH_PASS,
-  },
-  tls: {
-    rejectUnauthorized: false,
-  },
-});
+// var transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   auth: {
+//     user: process.env.AUTH_EMAIL,
+//     pass: process.env.AUTH_PASS,
+//   },
+//   tls: {
+//     rejectUnauthorized: false,
+//   },
+// });
+
+
+const sendMail = (name, email, id) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      // host: "smtp.gmail.com",
+      // port: 587,
+      // secure: false,
+      // requireTLS: true,
+      service:"Gmail",
+      auth: {
+        user: "atreyrachit23@gmail.com",
+        pass: "mqxp dbmz hjmn tpnx",
+      },
+    });
+
+    const mailOptions = {
+      from: "atreyrachit23@gmail.com",
+      to: email,
+      subject: "Verify your Email",
+      html: `<p>Press <a href="http://localhost:4000/users/verify/${id}">verify</a></p>`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        // console.log('err',error);
+        // res.status(500).json({
+        //   success: false,
+        //   error: "An error occurred while sending the verification email",
+        // });
+      } else {
+        // console.log('ddd',info.response)
+        // res.status(200).json({
+        //   success: true,
+        //   message: "Please check your mail",
+        // });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    // res.status(500).json({
+    //   success: false,
+    //   error: "An error occurred while processing the request",
+    // });
+  }
+};
+
+
 
 exports.signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    // console.log(req.body);
+
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -72,30 +122,25 @@ exports.signup = async (req, res) => {
 
     await newUser.save();
 
-    const mailOptions = {
-      from: ` The Creator ${process.env.AUTH_EMAIL} `,
-      to: newUser.email,
-      subject: "Verify your Email",
-      html: `<p>Verify your email ${newUser.username}</p>
-      <p>Press <a href="http://${req.headers.host}/users/verify-email?token=${newUser.emailtoken}">Verify your mail</a></p>`,
-    };
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-        return res.status(500).json({
-          success: false,
-          error: "An error occurred while sending the verification email",
-        });
-      }
-      res.status(200).json({
-        success: true,
-        message: "Please Check your mail",
-      });
-      // res.redirect("http://localhost:3000/signin?message=Please%20check%20your%20mail");
-
-
+    
+ if(newUser)
+ {
+    sendMail(newUser.username,newUser.email,newUser._id);
+    res.status(200).json({
+      success: true,
+      message: "Email send, Check your Email :) ",
     });
+ }
+ else
+ {
+  res.status(500).json({
+    success: false,
+    error: "Try again creating account",
+  });
+ }
+
+
+
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -105,32 +150,41 @@ exports.signup = async (req, res) => {
   }
 };
 
-
 exports.verify = async (req, res) => {
   try {
-    const token = req.query.token;
-    const user = await User.findOne({ emailtoken: token });
-
+    // const token = req.query.token;
+    const user = await User.findOne({ _id: req.params.id  });
     if (user) {
-      // user.emailtoken = null;
       user.verified = true;
       await user.save();
-
-
-      // You might want to include a flash message to inform the user.
-
+      console.log('User verified:', user);
+      // res.redirect("http://localhost:3000/signin");
       res.redirect("https://charming-belekoy-1d7e17.netlify.app/signin");
-    } else {
+      // res.redirect("email-verify");
 
-      // You might want to include an error message to inform the user.
-      // req.flash("error", "Invalid or expired verification token.");
-      res.redirect("https://charming-belekoy-1d7e17.netlify.app/");
+    } else {
+      console.log('Invalid user or expired verification token.');
+      res.redirect("http://localhost:3000/");
     }
+
+    // if (user) {
+    //   // user.emailtoken = null;
+    //   user.verified = true;
+    //   await user.save();
+    //   // res.redirect("https://charming-belekoy-1d7e17.netlify.app/signin");
+    res.redirect("https://charming-belekoy-1d7e17.netlify.app/signin");
+    // } else {
+    //   // You might want to include an error message to inform the user.
+    //   // req.flash("error", "Invalid or expired verification token.");
+    //   // res.redirect("https://charming-belekoy-1d7e17.netlify.app/");
+    //   res.redirect("http://localhost:3000/")
+    // }
   } catch (error) {
     console.error(error);
     // Handle the error and inform the user.
-    // req.flash("error", "An error occurred while verifying your email.");
-    res.redirect("https://charming-belekoy-1d7e17.netlify.app/");
+
+    res.redirect("https://charming-belekoy-1d7e17.netlify.app/signin");
+
   }
 };
 
@@ -140,14 +194,15 @@ exports.signin = async (req, res) => {
     const userverify = await User.findOne({
       $or: [{ email: usernameOrEmail }, { username: usernameOrEmail }],
     });
- 
+
     if (!userverify) {
       return res.status(404).json({ success: false, error: "User not found" });
     }
 
     if (!userverify.verified) {
-
-      return res.status(401).json({success: false,error: "Please verify yourself" });
+      return res
+        .status(401)
+        .json({ success: false, error: "Please verify yourself" });
     }
 
     const user = await User.findOne({
@@ -181,7 +236,6 @@ exports.signin = async (req, res) => {
       .json({ success: false, error: "An error occurred while signing in" });
   }
 };
-
 
 const client = new OAuth2Client(googleClientId);
 

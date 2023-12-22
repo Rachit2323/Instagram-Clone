@@ -334,6 +334,7 @@ exports.editPost = async (req, res) => {
 
 exports.profile = async (req, res) => {
   try {
+    console.log('ssss',req.file);
     const file = req.file;
 
     const fileUri = getDataUri(file);

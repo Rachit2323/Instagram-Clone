@@ -259,6 +259,8 @@ export const Profileupdate = createAsyncThunk(
       const token = localStorage.getItem("token");
       const formData = new FormData();
       formData.append("file", updatedPostData.image); // Access the image property from updatedPostData
+
+      console.log(formData);
       const result = await fetch(`${API}post/profileimg`, {
         method: "POST",
         headers: {
