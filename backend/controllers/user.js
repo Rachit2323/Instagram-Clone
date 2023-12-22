@@ -40,7 +40,9 @@ const sendMail = (name, email, id) => {
       from: "atreyrachit23@gmail.com",
       to: email,
       subject: "Verify your Email",
-      html: `<p>Press <a href="http://localhost:4000/users/verify/${id}">verify</a></p>`,
+      html: `<p>Press <a href="https://ins01.onrender.com/users/verify/${id}">verify</a></p>`,
+      // html: `<p>Press <a href="http://localhost:4000/users/verify/${id}">verify</a></p>`,
+     
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
